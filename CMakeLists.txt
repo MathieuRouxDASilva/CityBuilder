@@ -11,6 +11,7 @@ find_package(GTest CONFIG REQUIRED)
 find_package(SFML COMPONENTS system window graphics audio CONFIG REQUIRED)
 
 add_subdirectory(core/)
+add_subdirectory(api/)
 
 add_executable(main main.cc)
-target_link_libraries(main PRIVATE core sfml-system sfml-network sfml-graphics sfml-window sfml-audio)
+target_link_libraries(main PRIVATE api core sfml-system sfml-network sfml-graphics sfml-window sfml-audio)

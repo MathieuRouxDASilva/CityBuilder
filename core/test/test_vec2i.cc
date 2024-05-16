@@ -4,9 +4,7 @@
 
 //what values it takes -> pair of Vec2i
 struct Vec2iOperationFixture : public ::testing::TestWithParam<std::pair<core::Vec2i, core::Vec2i>>
-{
-
-};
+{};
 
 //test by itself -> add
 TEST_P(Vec2iOperationFixture, add)
@@ -46,4 +44,4 @@ TEST_P(Vec2iOperationFixture, perpendicular)
 
 //instantiate tes by itself and their specific values
 INSTANTIATE_TEST_SUITE_P(PositiveNumbers, Vec2iOperationFixture, testing::Values(
-	std::pair{ core::Vec2i{1,3}, core::Vec2i{ 2,4 } }));
+	std::pair{ core::Vec2i{1,3}, core::Vec2i{2,4} }));
