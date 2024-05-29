@@ -42,6 +42,32 @@ TEST_P(Vec2iOperationFixture, perpendicular)
 	EXPECT_EQ(core::Vec2i::Dot(v2, p2), 0);
 }
 
+//test by itself -> calculate multiply
+TEST_P(Vec2iOperationFixture, multiply)
+{
+	//substraction
+	auto [v1, v2] = GetParam();
+	const auto p1 = v1 * 2;
+	const auto p2 = v2 * 2;
+	EXPECT_EQ(p1.x, v1.x * 2);
+	EXPECT_EQ(p1.y, v1.y * 2);
+	EXPECT_EQ(p2.x, v2.x * 2);
+	EXPECT_EQ(p2.y, v2.y * 2);
+}
+
+//test by itself -> calculate multiply
+TEST_P(Vec2iOperationFixture, divide)
+{
+	//substraction
+	auto [v1, v2] = GetParam();
+	const auto p1 = v1 / 2;
+	const auto p2 = v2 / 2;
+	EXPECT_EQ(p1.x, v1.x / 2);
+	EXPECT_EQ(p1.y, v1.y / 2);
+	EXPECT_EQ(p2.x, v2.x / 2);
+	EXPECT_EQ(p2.y, v2.y / 2);
+}
+
 //instantiate tes by itself and their specific values
 INSTANTIATE_TEST_SUITE_P(PositiveNumbers, Vec2iOperationFixture, testing::Values(
 	std::pair{ core::Vec2i{1,3}, core::Vec2i{2,4} }));

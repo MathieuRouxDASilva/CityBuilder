@@ -1,5 +1,7 @@
 #ifndef CORE_MATHS_VEC2I_H_
 #define CORE_MATHS_VEC2I_H_
+#include <iostream>
+#include <__msvc_sanitizer_annotate_container.hpp>
 
 namespace core
 {
@@ -34,6 +36,21 @@ namespace core
     constexpr Vec2i Perpendicular() const
     {
         return { -y, x };
+    }
+    constexpr Vec2i operator*(int scalar) const
+    {
+        return { x * scalar, y * scalar};
+    }
+    constexpr Vec2i operator/(int scalar) const
+    {
+        if(scalar == 0)
+        {
+            throw std::invalid_argument("Division by zero");
+        }
+        else
+        {
+            return { x / scalar, y / scalar };
+        }
     }
 
 

@@ -15,3 +15,6 @@ add_subdirectory(api/)
 
 add_executable(main main.cc)
 target_link_libraries(main PRIVATE api core sfml-system sfml-network sfml-graphics sfml-window sfml-audio)
+
+#copy resources in build
+file(COPY ${CMAKE_SOURCE_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR})
