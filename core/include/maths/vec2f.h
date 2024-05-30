@@ -1,8 +1,9 @@
 #ifndef CORE_MATHS_VEC2F_H_
 #define CORE_MATHS_VEC2F_H_
-#include <iostream>
 #include <cmath>
 #include <complex>
+
+#include "vec2i.h"
 
 namespace core
 {
@@ -12,6 +13,14 @@ namespace core
 	struct Vec2f
 	{
 		float x = 0, y = 0;
+
+		//Vec2f() = default;
+
+		//// Constructor from Vec2f
+		//explicit Vec2f(const Vec2i& vec) : x(static_cast<float>(vec.x)), y(static_cast<float>(vec.y)) {}
+
+		//// Constructor
+		//Vec2f(float x, float y) : x(x), y(y) {}
 
 		//add system
 		constexpr Vec2f operator+(Vec2f other)const
@@ -38,59 +47,56 @@ namespace core
 		}
 
 		//divide
-		constexpr Vec2f operator/(float scalaire) const
+		constexpr Vec2f operator/(float scalar) const
 		{
-			if (scalaire == 0)
+			if (scalar == 0)
 			{
-				std::cerr << "deviding by 0\n";
+				//std::exception_ptr << "dividing by 0\n"; //put an exception or crash
 			}
 			else
 			{
-				return { x / scalaire, y / scalaire };
+				return { x / scalar, y / scalar };
 			}
 		}
 
 		//dot product (produit scalaire) system
-		static constexpr int Dot(Vec2f v1, Vec2f v2)
+		static constexpr float Dot(Vec2f v1, Vec2f v2)
 		{
 			return v1.x * v2.x + v1.y * v2.y;
 		}
 
 		//perpenducular
-		constexpr Vec2f Perpendicular() const
+		[[nodiscard]] constexpr Vec2f Perpendicular() const //FAIRE perpendicular 2
 		{
 			return { -y, x };
 		}
 
 		//Lerp
-		constexpr Vec2f Lerp(Vec2f a, Vec2f b, float t) const
+		[[nodiscard]] static constexpr Vec2f Lerp(Vec2f a, Vec2f b, float t)
 		{
 			return { a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t };
 		}
 
 		//normalise and sqr normalise your vector
-		Vec2f  Normalise() const
+		[[nodiscard]] Vec2f  Normalise() const
 		{
 			const float mag = Magnitude();
 			if (mag == 0)
 			{
-				throw std::invalid_argument("Cannot normalize a zero vector");
+				//throw std::("Cannot normalize a zero vector"); //wrong error message
 			}
 			return { x / mag, y / mag };
-		}
-		Vec2f SqrNormalise() const
-		{
-			return { x / SqrMagnitude(),y / SqrMagnitude() };
 		}
 
 
 		//calculate magnitude and sqr magnitude
-		float Magnitude() const
+		[[nodiscard]] float Magnitude() const
 		{
 			const float length = std::sqrt(x * x + y * y);
 			return  length;
 		}
-		float SqrMagnitude() const
+
+		[[nodiscard]] constexpr float SqrMagnitude() const
 		{
 			const float length = x * x + y * y;
 			return  length;
@@ -99,7 +105,15 @@ namespace core
 
 	}; //struct Vec2i
 
-
+	//operator for float in left side
+	constexpr Vec2f operator*(float t, const Vec2f& vec)
+	{
+		return { t * vec.x, t * vec.y };
+	}
+	constexpr Vec2f operator/(float t, const Vec2f& vec)
+	{
+		return { t /vec.x, t / vec.y };
+	}
 
 } //namespace core
 
