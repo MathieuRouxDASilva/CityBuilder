@@ -1,15 +1,29 @@
+#include <iostream>
 #include <SFML/Graphics.hpp>
+
+#include "graphics/tilemap.h"
 #include "UI/uibutton.h"
+
+
+void MainCallBack()
+{
+	std::cout << "callback\n";
+}
 
 int main()
 {
+	//tiles data
+	Tilemap tilemap;
+
 	sf::RenderWindow window(sf::VideoMode(800, 800), "My window");
 
 	//button data
-	sf::Vector2f button_size = sf::Vector2f(500, 100);
-	sf::Vector2f button_position = sf::Vector2f(window.getSize().x /2, 100);
+	auto button_size = sf::Vector2f(500, 100);
+	auto button_position = sf::Vector2f(window.getSize().x /2.0f, 100);
 	UiButton button(sf::Color::Magenta, button_size, button_position);
 
+
+	
 	while (window.isOpen())
 	{
 		// check all the window's events that were triggered since the last iteration of the loop
@@ -28,7 +42,7 @@ int main()
 
 		// draw everything here...
 		window.draw(button);
-
+		window.draw(tilemap);
 
 
 		// end the current frame

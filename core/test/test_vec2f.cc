@@ -84,6 +84,7 @@ TEST_P(Vec2fOperationFixture, Lerp)
 	auto [v1, v2] = GetParam();
 	constexpr float t = 0.0f;
 	const auto p1 = v1.Lerp(v1, v2, t);
+	const auto p2 = v1.Lerp(v1, v2, t +1.0f);
 	EXPECT_FLOAT_EQ(p1.x, v1.x + (v2.x - v1.x) * t);
 	EXPECT_FLOAT_EQ(p1.y, v1.y + (v2.y - v1.y) * t);
 
@@ -94,7 +95,7 @@ TEST_P(Vec2fOperationFixture, Lerp)
 	}
 	else if constexpr (t == 1.0f)
 	{
-		EXPECT_FLOAT_EQ(p1.x, v2.x);
+		EXPECT_FLOAT_EQ(p2.x, v2.x);
 	}
 
 }

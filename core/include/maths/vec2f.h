@@ -51,7 +51,8 @@ namespace core
 		{
 			if (scalar == 0)
 			{
-				//std::exception_ptr << "dividing by 0\n"; //put an exception or crash
+				//can't devide by 0
+				std::terminate();
 			}
 			else
 			{
@@ -83,7 +84,7 @@ namespace core
 			const float mag = Magnitude();
 			if (mag == 0)
 			{
-				//throw std::("Cannot normalize a zero vector"); //wrong error message
+				std::terminate();
 			}
 			return { x / mag, y / mag };
 		}
