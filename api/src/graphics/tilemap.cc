@@ -1,50 +1,44 @@
-#include "graphics/tilemap.h"
-
 #include <iostream>
+#include "graphics/Tilemap.h"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include "graphics/resource_manager.h"
 
+// Fix 1 : initiate static in the cc file
+sf::Vector2u Tilemap::playground_size_u_;
+sf::Vector2u Tilemap::playground_tile_offset_u_ = sf::Vector2u(18, 18);
 
-Tilemap::Tilemap()
+Tilemap::Tilemap(const sf::Vector2u size)
 {
-
-	//setup tile by default
-	tile_.setSize(sf::Vector2f(20.0f, 20.0f));
-	tile_.setPosition(200.0f, 200.0f);
-	tile_.setFillColor(sf::Color::Magenta);
-
-
-
-	DrawAll();
+	tiles_.reserve(size.x * size.y);
+	//define size of tilemap
+	playground_size_u_ = size;
 }
 
-int  Tilemap::GetSize() const 
+//generate map
+void Tilemap::Generate()
 {
-	int number_of_tiles = 0;
-	for (int x = 0; x < max_width_; x++)
+	tiles_.clear();
+
+	for (unsigned int x = 0; x < playground_size_u_.x; x++)
 	{
-		for (int y = 0; y < max_height_; y++)
+		for (unsigned int y = 0; y < playground_size_u_.y; y++)
 		{
-			number_of_tiles++;
+			std::cout << "Add a sprite in that position " << x << ":" << y << std::endl;
+
+			const int idx = x * playground_size_u_.y + y;
+			tiles_.emplace_back() = sf::Sprite();
+			tiles_[idx].setTexture(ResourceManager::Get().Texture(ResourceManager::Resource::kTerrainGround));
+			tiles_[idx].setPosition(x * playground_tile_offset_u_.x, y * playground_tile_offset_u_.y);
+
 		}
-		std::cout << "\n\n";
 	}
-	return number_of_tiles;
 }
 
-void Tilemap::DrawAll() const
+void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for (int x = 0; x < max_width_; x++)
+	for (auto& tile : tiles_)
 	{
-		for (int y = 0; y < max_height_; y++)
-		{
-			const auto index = array_[x][y];
-
-			if(index == kForest)
-			{
-				std::cout << "0\t";
-			}
-
-		}
-		std::cout << "\n\n";
+		//std::cout << "Draw a sprite in that position " << tile.getPosition().x << ":" << tile.getPosition().y << std::endl;
+		target.draw(tile, states);
 	}
 }

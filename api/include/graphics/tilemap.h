@@ -1,58 +1,31 @@
 #ifndef API_TILEMAP_H_
 #define API_TILEMAP_H_
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
-
-
-enum TileType
-{
-	kForest,
-	kPlane = 10,
-	kRock = 10
-};
-
-
-
+#include <vector>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/System/Vector2.hpp>
 
 class Tilemap : public sf::Drawable
 {
+
+public:
+
+	static sf::Vector2u playground_size_u_;
+	static sf::Vector2u playground_tile_offset_u_;
+
+	explicit Tilemap(const sf::Vector2u size);
+
+	void Generate();
+
+
+	Tilemap() = default;
+
 private:
-	int max_height_ = 10;
-	int max_width_ = 10;
-
-	//array of tiles
-	TileType array_ [kPlane][kRock] = {};
-
-	//tile by itself
-	sf::RectangleShape tile_;
-
-
+	std::vector<sf::Sprite> tiles_;
 
 protected:
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
-	{
-		target.draw(tile_, states);
-	}
-
-public :
-	//constructor
-	Tilemap();
-
-	//get size of array
-	int GetSize() const;
-
-	//draw array in numbers
-	void DrawAll() const;
-
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
-
-
-
-
-
-
-
-
 
 
 #endif

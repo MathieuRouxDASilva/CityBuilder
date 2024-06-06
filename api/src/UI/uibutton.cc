@@ -1,6 +1,9 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
 #include <UI/uibutton.h>
+#include "graphics/resource_manager.h"
+
+
 
 //inplemantation of the draw function 
 void UiButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -15,17 +18,8 @@ void UiButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
  */
 void UiButton::SetupButton(sf::Color color, sf::Vector2f size, sf::Vector2f position)
 {
-	//button setup
-	/*building_button_.setSize(size);
-	building_button_.setFillColor(color);
-	building_button_.setOutlineColor(sf::Color::White);
-	building_button_.setOutlineThickness(10);
-	building_button_.setOrigin(size / 2.0f);
-	building_button_.setPosition(position);*/
-
-
 	//set sprite and texture
-	button_texture_.loadFromFile("resources/PNG/button_blue_corner.png");
+	button_texture_ = ResourceManager::Get().Texture(ResourceManager::Resource::kYellowButton);
 
 	button_sprite_.setTexture(button_texture_);
 	button_sprite_.setOrigin(size / 4.0f);
@@ -67,10 +61,6 @@ void UiButton::HandleEvent(const sf::Event& event)
 			{
 				SetScale(1.0f, 1.0f);
 				button_sprite_.setColor(sf::Color::White);
-
-				//---------------------------------------button's code
-				//call_back_();
-
 			}
 		}
 	}
@@ -85,6 +75,7 @@ void UiButton::HandleEvent(const sf::Event& event)
 			{
 				SetScale(0.9f, 0.9f);
 				button_sprite_.setColor(sf::Color::Green);
+				call_back_();
 			}
 		}
 	}
