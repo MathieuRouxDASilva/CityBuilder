@@ -18,12 +18,22 @@ void ResourceManager::LoadAllFonts()
 	fonts_[FontsEnum::kButtonFont].loadFromFile("resources/fonts/Super Festival Personal Use.ttf");
 }
 
+void ResourceManager::LoadAllCursorTextures()
+{
+	default_cursor_texture_ = sf::Texture();
+	//Cursor textures ------------------------
+	cursor_textures_[CursorTextures::kCustomCursor].loadFromFile("resources/PNG/custom_cursor.png");
+	cursor_textures_[CursorTextures::kDefaultCursor].loadFromFile("resources/PNG/custom_basic_cursor.png");
+}
+
 //constructor
 ResourceManager::ResourceManager()
 {
 	LoadAllTextures();
 
 	LoadAllFonts();
+
+	LoadAllCursorTextures();
 }
 
 //get texture and returns it
@@ -49,4 +59,18 @@ sf::Font& ResourceManager::Font(FontsEnum font_id)
 	{
 		return default_font_;
 	}
+}
+
+//get cursor texture and return it
+sf::Texture& ResourceManager::CursorTexture(CursorTextures cursor_texture_id)
+{
+	if (cursor_textures_.contains(cursor_texture_id))
+	{
+		return cursor_textures_.at(cursor_texture_id);
+	}
+	else
+	{
+		return default_cursor_texture_;
+	}
+
 }

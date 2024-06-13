@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "gameplay/building_manager.h"
 #include "graphics/tilemap.h"
+#include "UI/cursor.h"
 #include "UI/hovered_tile.h"
 #include "UI/uibutton.h"
 
@@ -9,6 +10,9 @@ int main()
 {
 	//window
 	sf::RenderWindow window(sf::VideoMode(1500, 800), "My window");
+	window.setMouseCursorVisible(false);
+	Cursor cursor;
+	Cursor::set_default_cursor();
 
 	//tilemap data
 	Tilemap tilemap;
@@ -40,6 +44,7 @@ int main()
 	button_2.call_back_ = [&build]
 		{
 			build.SetActive();
+			Cursor::SwapTexture();
 		};
 	//callback to put buildings
 	tilemap.clicked_tile_call_back_ = [&build, &mouse_tile_coord](Tile& tile)
@@ -62,6 +67,7 @@ int main()
 
 		//set hover frame proprely
 		HoveredTile::set_position(mouse_tile_position);
+		Cursor::MoveCursor(window);
 
 
 		// check all the window's events that were triggered since the last iteration of the loop
@@ -88,6 +94,7 @@ int main()
 		window.draw(button);
 		window.draw(button_2);
 		window.draw(build);
+		window.draw(cursor);
 
 		// end the current frame
 		window.display();

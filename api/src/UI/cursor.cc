@@ -1,11 +1,52 @@
 #include "UI/cursor.h"
 
-void Cursor::set_custom_cursor(sf::Window& window) const
+#include <SFML/Graphics/Sprite.hpp>
+
+#include "graphics/resource_manager.h"
+//static 
+sf::Sprite Cursor::cursor_sprite_;
+bool Cursor::is_default_;
+
+void Cursor::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	window.setMouseCursor(custom_cursor_);
+	target.draw(cursor_sprite_, states);
 }
 
-void Cursor::set_default_cursor(sf::Window& window) const
+//move
+void Cursor::MoveCursor(const sf::Window& window)
 {
-	window.setMouseCursor(default_cursor_);
+	cursor_sprite_.setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+}
+
+//swap beetween custom and default based on a bool
+void Cursor::SwapTexture()
+{
+	if(is_default_)
+	{
+		set_custom_cursor();
+		is_default_ = false;
+	}
+	else
+	{
+		set_default_cursor();
+		is_default_ = true;
+	}
+}
+
+//Cursor
+Cursor::Cursor()
+{
+	is_default_ = true;
+}
+
+//set texture to custom (building)
+void Cursor::set_custom_cursor()
+{
+    cursor_sprite_.setTexture(ResourceManager::Get().CursorTexture(ResourceManager::CursorTextures::kCustomCursor));
+}
+
+//set texture to default
+void Cursor::set_default_cursor()
+{
+	cursor_sprite_.setTexture(ResourceManager::Get().CursorTexture(ResourceManager::CursorTextures::kDefaultCursor));
 }
