@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <maths/fixed_queue.h>
+#include <constainers/fixed_queue.h>
 
 
 //what values it takes -> pair of fixedqueue
@@ -75,7 +75,7 @@ TEST_P(FixedQueueOperationFixture, capacity)
 	core::FixedQueue<int, 50> fixed;
 
 	//add 50 elements
-	for (int i = 0; i < 50; i++)
+	for (int i = 1; i < 51; i++)
 	{
 		fixed.Push(i);
 	}

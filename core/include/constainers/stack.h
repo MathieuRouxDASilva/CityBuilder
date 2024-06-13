@@ -1,5 +1,5 @@
-#ifndef CORE_MATHS_STACK_H_
-#define CORE_MATHS_STACK_H_
+#ifndef CORE_CONTAINERS_STACK_H_
+#define CORE_CONTAINERS_STACK_H_
 #include <vector>
 
 namespace core
@@ -66,4 +66,4 @@ namespace core
 	};
 } //core
 
-#endif // CORE_MATHS_STACK_H_
+#endif // CORE_CONTAINERS_STACK_H_

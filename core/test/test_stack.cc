@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <maths/stack.h>
+#include <constainers/stack.h>
 
 
 //what values it takes -> pair of stacks

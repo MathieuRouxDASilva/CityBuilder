@@ -4,7 +4,6 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
@@ -27,18 +26,18 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	//setup for constructor
-	void SetupButton(sf::Color color, sf::Vector2f size, sf::Vector2f position);
-	void SetupText(sf::Vector2f position);
-	
-
+	void SetupButton(sf::Vector2f position);
+	void SetupText(sf::Vector2f position,const std::string& name);
 public :
 	//constructor
-	UiButton(sf::Color color, sf::Vector2f size, sf::Vector2f position);
+	UiButton(sf::Vector2f position,const std::string& name);
 	//function that handle events
 	void HandleEvent(const sf::Event& event);
 
+	//set scale
 	void SetScale(float factor_x, float factor_y);
 
+	//call back
 	std::function<void()> call_back_;
 };
 

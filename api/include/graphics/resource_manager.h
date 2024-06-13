@@ -11,15 +11,31 @@ public:
 	enum class Resource
 	{
 		kYellowButton,
-		kTerrainGround
+		kTerrainGround,
+		kTerrainDoor,
+		kTerrainSunflowerGround,
+		kTerrainSunBasicGround
+	};
+
+	enum class FontsEnum
+	{
+		kButtonFont
 	};
 
 private:
+	//textures
 	std::unordered_map<Resource, sf::Texture> textures_;
 	sf::Texture blank_texture_;
 
-	//load all
+	//fonts
+	std::unordered_map<FontsEnum, sf::Font> fonts_;
+	sf::Font default_font_;
+
+	//load all textures
 	void LoadAllTextures();
+
+	//load all fonts
+	void LoadAllFonts();
 
 public:
 	static ResourceManager& Get()
@@ -33,8 +49,9 @@ public:
 	ResourceManager(const ResourceManager&) = delete;
 	ResourceManager& operator=(const ResourceManager&) = delete;
 
+	//return Texture/font
 	sf::Texture& Texture(Resource resource_id);
-
+	sf::Font& Font(FontsEnum font_id);
 };
 
 #endif
