@@ -13,7 +13,11 @@ protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 public:
+	//constructors
+	HoveredTile() = default;
 	explicit HoveredTile(sf::Vector2f size);
+	HoveredTile(const HoveredTile& other) = default;
+	HoveredTile& operator=(const HoveredTile& other) = default;
 
 	//allow feedbacks on if tile is buildable or not
 	static void ChangeColor(sf::Vector2i pos);

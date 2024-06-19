@@ -15,4 +15,9 @@ test/test_small_vector.cc
 test/test_basic_vector.cc
 test/test_fixed_vector.cc)
 
+if(ENABLE_PROFILING)
+    target_link_libraries(core PUBLIC Tracy::TracyClient)
+    target_compile_definitions(core PUBLIC TRACY_ENABLE=1)
+endif(ENABLE_PROFILING)
+
 target_link_libraries(core_test PRIVATE core GTest::gtest GTest::gtest_main)

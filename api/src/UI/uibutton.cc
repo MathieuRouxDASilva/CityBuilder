@@ -5,7 +5,7 @@
 #include "graphics/resource_manager.h"
 
 //constructor init
-UiButton::UiButton(const sf::Vector2f position,const std::string& name)
+UiButton::UiButton(const sf::Vector2f position, const std::string& name)
 {
 	SetupButton(position);
 
@@ -17,29 +17,26 @@ UiButton::UiButton(const sf::Vector2f position,const std::string& name)
  */
 void UiButton::SetupButton(const sf::Vector2f position)
 {
-	//set sprite and texture
-	button_texture_ = ResourceManager::Get().Texture(ResourceManager::Resource::kYellowButton);
-
 	//setup button 1 -> generate map
-	button_sprite_.setTexture(button_texture_);
-	button_sprite_.setOrigin(button_sprite_.getLocalBounds().getSize().x /2.0f, button_sprite_.getLocalBounds().getSize().y / 2.0f);
 	button_sprite_.setColor(sf::Color::White);
+	button_sprite_.setTexture(ResourceManager::Get().Texture(ResourceManager::Resource::kYellowButton));
+	button_sprite_.setOrigin(button_sprite_.getLocalBounds().getSize().x / 2.0f, button_sprite_.getLocalBounds().getSize().y / 2.0f);
 	button_sprite_.setPosition(position);
 }
 
 /**
  * \brief setup text on the button and how it looks
  */
-void UiButton::SetupText(const sf::Vector2f position,const std::string& name)
+void UiButton::SetupText(const sf::Vector2f position, const std::string& name)
 {
-	//font
-	button_font_ =ResourceManager::Get().Font(ResourceManager::FontsEnum::kButtonFont);
+	constexpr int offset = 10;
 
-	const auto text_position = sf::Vector2f(position.x - button_sprite_.getGlobalBounds().getSize().x / 2.0f,
-		position.y - button_sprite_.getGlobalBounds().getSize().y / 2.0f + 10);
+	//position of the text based on the button's position
+	const auto text_position = sf::Vector2f(position.x - button_sprite_.getGlobalBounds().getSize().x / 2.0f + offset,
+		position.y - button_sprite_.getGlobalBounds().getSize().y / 2.0f + offset);
 
 	//text
-	button_text_.setFont(button_font_);
+	button_text_.setFont(ResourceManager::Get().Font(ResourceManager::FontsEnum::kButtonFont));
 	button_text_.setString(name);
 	button_text_.setCharacterSize(24);
 	button_text_.setFillColor(sf::Color::Black);
@@ -96,4 +93,3 @@ void UiButton::SetScale(const float factor_x, const float factor_y)
 {
 	button_sprite_.setScale(factor_x, factor_y);
 }
-
