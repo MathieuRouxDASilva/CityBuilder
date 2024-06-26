@@ -4,7 +4,6 @@
 #include "gameplay/building_manager.h"
 #include "graphics/tilemap.h"
 
-sf::RectangleShape HoveredTile::tile_shape_;
 
 void HoveredTile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
@@ -20,13 +19,11 @@ HoveredTile::HoveredTile(const sf::Vector2f size)
 	tile_shape_.setOrigin(0, 0);
 }
 
-void HoveredTile::ChangeColor(const sf::Vector2i pos)
+void HoveredTile::ChangeColor(const sf::Vector2i pos, const bool is_active, const bool is_buildable)
 {
-	if (Tilemap::is_map_generated() && BuildingManager::is_active())
+	if (is_active)
 	{
-		auto position = static_cast<sf::Vector2f>(pos);
-
-		if (Tilemap::CheckIfBuildable(pos))
+		if (is_buildable)
 		{
 			set_color(sf::Color::Green);
 		}

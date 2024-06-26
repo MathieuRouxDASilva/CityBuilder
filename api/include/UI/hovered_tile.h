@@ -3,11 +3,11 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
+
 class HoveredTile: public sf::Drawable
 {
 private:
-	static sf::RectangleShape tile_shape_;
-
+	sf::RectangleShape tile_shape_;
 
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -20,11 +20,11 @@ public:
 	HoveredTile& operator=(const HoveredTile& other) = default;
 
 	//allow feedbacks on if tile is buildable or not
-	static void ChangeColor(sf::Vector2i pos);
+	void ChangeColor(sf::Vector2i pos, bool is_active, bool is_buildable);
 
 	//Set -------------------------------
-	static void set_position(sf::Vector2f position);
-	static void set_color(sf::Color color);
+	void set_position(sf::Vector2f position);
+	void set_color(sf::Color color);
 };
 
 

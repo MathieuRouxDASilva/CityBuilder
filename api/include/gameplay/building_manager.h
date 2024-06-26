@@ -1,31 +1,46 @@
 #ifndef API_GAMEPLAY_BUILDING_MANAGER_H_
 #define API_GAMEPLAY_BUILDING_MANAGER_H_
 #include "buildings.h"
+#include "economy_manager.h"
 #include "graphics/tile.h"
+#include "graphics/tilemap.h"
 
+
+class Tilemap;
 
 class BuildingManager : public sf::Drawable
 {
 private:
-	static bool is_active_;
+	size_t normal_build_cost_;
+	bool is_active_;
+	Tilemap& tilemap_;
+	EconomyManager& economy_manager_;
 
 	//check if it's possible
-	static bool CheckIfBuildable(sf::Vector2i mouse_pos);
+	[[nodiscard]] bool CheckIfBuildable(sf::Vector2i mouse_pos) const;
 
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 public:
-	static std::vector<Building> buildings_;
+	std::vector<Building> buildings_;
 
-	BuildingManager();
+	//setup build manager
+	void init(BuildingManager& build) const;
 
-	static void AddBuilding(sf::Vector2i pos, ResourceManager::Resource resource);
+	//constructor
+	explicit BuildingManager(Tilemap& tilemap, EconomyManager& economy);
 
-	static void SetActive();
+	//put building
+	void AddBuilding(sf::Vector2i pos, ResourceManager::Resource resource);
+	//reset all
+	void DestroyAllBuildings();
+
+	//Set -------------------------
+	void SetActive();
 
 	//Get -------------------------
-	[[nodiscard]] static bool is_active();
+	[[nodiscard]] bool is_active() const;
 
 };
 #endif

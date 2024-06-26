@@ -79,14 +79,12 @@ namespace core
 		}
 
 		//normalise and sqr normalise your vector
-		[[nodiscard]] Vec2f  Normalise() const
+		Vec2f  Normalise() const
 		{
-			const float mag = Magnitude();
-			if (mag == 0)
-			{
-				std::terminate();
-			}
-			return { x / mag, y / mag };
+			const float norm_x = x == 0 ? 0 : x / Magnitude();
+			const float norm_y = y == 0 ? 0 : y / Magnitude();
+			return { norm_x, norm_y };
+
 		}
 
 

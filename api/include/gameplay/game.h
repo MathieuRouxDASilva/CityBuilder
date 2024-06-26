@@ -3,10 +3,12 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "building_manager.h"
+#include "woodsman.h"
 #include "graphics/Tilemap.h"
 #include "UI/cursor.h"
 #include "UI/hovered_tile.h"
 #include "UI/uibutton.h"
+#include "UI/ui_economy.h"
 
 class Game
 {
@@ -33,10 +35,20 @@ private:
 	sf::Vector2i mouse_tile_coord_;
 
 	//cursor
-	Cursor cursor_; //no need to inplement it it's only sa that we can get acces to draw()
+	Cursor cursor_;
+
+	//UI
+	UiEconomy ui_economy_;
+
+	//economy
+	EconomyManager economy_;
+
 
 	void PrepareCallBacks();
-
+	void CalculateMousePosition();
+	void SetupCursorAndHoverPositionBasedOnMousePos();
+	void GraphicSetup();
+	void HoverColorSetup(bool& is_active, bool& is_buildable);
 
 public:
 	//constructor

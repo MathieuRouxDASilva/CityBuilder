@@ -3,9 +3,6 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #include "graphics/resource_manager.h"
-//static 
-sf::Sprite Cursor::cursor_sprite_;
-bool Cursor::is_default_;
 
 void Cursor::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

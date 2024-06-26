@@ -15,7 +15,8 @@ public:
 		kTerrainGround,
 		kTerrainDoor,
 		kTerrainSunflowerGround,
-		kTerrainSunBasicGround,
+		kTerrainBasicGround,
+		kWoodsMan,
 		kLength
 	};
 
@@ -28,7 +29,8 @@ public:
 
 	enum class FontsEnum
 	{
-		kButtonFont
+		kButtonFont,
+		kArial
 	};
 
 private:

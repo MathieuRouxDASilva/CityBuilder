@@ -1,6 +1,6 @@
-#include <iostream>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
+#include <tracy/Tracy.hpp>
 #include <UI/uibutton.h>
 #include "graphics/resource_manager.h"
 
@@ -55,6 +55,11 @@ void UiButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 //handle event init
 void UiButton::HandleEvent(const sf::Event& event)
 {
+
+#ifdef TRACY_ENABLE
+	ZoneScoped;
+#endif
+
 	//button 1
 	if (event.type == sf::Event::MouseButtonReleased)
 	{
@@ -82,7 +87,6 @@ void UiButton::HandleEvent(const sf::Event& event)
 				SetScale(0.9f, 0.9f);
 				button_sprite_.setColor(sf::Color::Green);
 				call_back_();
-				std::cout << "doing callback\n";
 			}
 		}
 	}

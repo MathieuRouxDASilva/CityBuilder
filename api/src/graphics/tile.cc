@@ -1,6 +1,7 @@
 #include "graphics/tile.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <tracy/Tracy.hpp>
 
 
 void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -10,6 +11,9 @@ void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 Tile::Tile(const ResourceManager::Resource& resource, const sf::Vector2f position, const bool is_walkable, const bool allow_buildings)
 {
+#ifdef TRACY_ENABLE
+	ZoneNamedN(TileCreation, "Tile Creation", true);
+#endif
 	//setup sprite_
 	sprite_.setTexture(ResourceManager::Get().Texture(resource));
 	sprite_.setPosition(position);

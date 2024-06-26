@@ -1,25 +1,47 @@
 #include "graphics/resource_manager.h"
 
+#include <tracy/Tracy.hpp>
+
 void ResourceManager::LoadAllTextures()
 {
+#ifdef TRACY_ENABLE
+	ZoneScoped;
+#endif
+
 	blank_texture_ = sf::Texture();
 	// Textures -----------------
 	textures_[Resource::kYellowButton].loadFromFile("resources/PNG/button_blue_corner.png");
 	textures_[Resource::kTerrainGround].loadFromFile("resources/PNG/ground.png");
 	textures_[Resource::kTerrainDoor].loadFromFile("resources/PNG/door.png");
 	textures_[Resource::kTerrainSunflowerGround].loadFromFile("resources/PNG/sunflower_ground.png");
-	textures_[Resource::kTerrainSunBasicGround].loadFromFile("resources/PNG/basic_ground.png");
+	textures_[Resource::kTerrainBasicGround].loadFromFile("resources/PNG/basic_ground.png");
+	textures_[Resource::kWoodsMan].loadFromFile("resources/PNG/woodsman.png");
+
+
+	//texture array
+	textures_array_[static_cast<int>(Resource::kYellowButton)].loadFromFile("resources/PNG/button_blue_corner.png");
+	textures_array_[static_cast<int>(Resource::kTerrainGround)].loadFromFile("resources/PNG/ground.png");
+	textures_array_[static_cast<int>(Resource::kTerrainDoor)].loadFromFile("resources/PNG/door.png");
+	textures_array_[static_cast<int>(Resource::kTerrainSunflowerGround)].loadFromFile("resources/PNG/sunflower_ground.png");
+	textures_array_[static_cast<int>(Resource::kTerrainBasicGround)].loadFromFile("resources/PNG/basic_ground.png");
 }
 
 void ResourceManager::LoadAllFonts()
 {
+#ifdef TRACY_ENABLE
+	ZoneScoped;
+#endif
 	default_font_ = sf::Font();
 	// Fonts -------------------
 	fonts_[FontsEnum::kButtonFont].loadFromFile("resources/fonts/Super Festival Personal Use.ttf");
+	fonts_[FontsEnum::kArial].loadFromFile("resources/fonts/arial.ttf");
 }
 
 void ResourceManager::LoadAllCursorTextures()
 {
+#ifdef TRACY_ENABLE
+	ZoneScoped;
+#endif
 	default_cursor_texture_ = sf::Texture();
 	//Cursor textures ------------------------
 	cursor_textures_[CursorTextures::kCustomCursor].loadFromFile("resources/PNG/custom_cursor.png");
@@ -29,6 +51,10 @@ void ResourceManager::LoadAllCursorTextures()
 //constructor
 ResourceManager::ResourceManager()
 {
+#ifdef TRACY_ENABLE
+	ZoneScoped;
+#endif
+
 	LoadAllTextures();
 
 	LoadAllFonts();
@@ -39,13 +65,24 @@ ResourceManager::ResourceManager()
 //get texture and returns it
 sf::Texture& ResourceManager::Texture(Resource resource_id)
 {
-	if (textures_.contains(resource_id)) {
+	if (textures_.contains(resource_id))
+	{
 		return textures_.at(resource_id);
 	}
 	else
 	{
 		return blank_texture_;
 	}
+
+
+	/*if (textures_array_[static_cast<int>(resource_id)] <= textures_array_.size())
+	{
+		return textures_.at(resource_id);
+	}
+	else
+	{
+		return blank_texture_;
+	}*/
 }
 
 //get font and return it
