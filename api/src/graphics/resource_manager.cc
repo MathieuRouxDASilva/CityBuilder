@@ -10,20 +10,12 @@ void ResourceManager::LoadAllTextures()
 
 	blank_texture_ = sf::Texture();
 	// Textures -----------------
-	textures_[Resource::kYellowButton].loadFromFile("resources/PNG/button_blue_corner.png");
-	textures_[Resource::kTerrainGround].loadFromFile("resources/PNG/ground.png");
-	textures_[Resource::kTerrainDoor].loadFromFile("resources/PNG/door.png");
-	textures_[Resource::kTerrainSunflowerGround].loadFromFile("resources/PNG/sunflower_ground.png");
-	textures_[Resource::kTerrainBasicGround].loadFromFile("resources/PNG/basic_ground.png");
-	textures_[Resource::kWoodsMan].loadFromFile("resources/PNG/woodsman.png");
-
-
-	//texture array
 	textures_array_[static_cast<int>(Resource::kYellowButton)].loadFromFile("resources/PNG/button_blue_corner.png");
 	textures_array_[static_cast<int>(Resource::kTerrainGround)].loadFromFile("resources/PNG/ground.png");
-	textures_array_[static_cast<int>(Resource::kTerrainDoor)].loadFromFile("resources/PNG/door.png");
+	textures_array_[static_cast<int>(Resource::kBlueHouse)].loadFromFile("resources/PNG/basic_blue_house.png");
 	textures_array_[static_cast<int>(Resource::kTerrainSunflowerGround)].loadFromFile("resources/PNG/sunflower_ground.png");
 	textures_array_[static_cast<int>(Resource::kTerrainBasicGround)].loadFromFile("resources/PNG/basic_ground.png");
+	textures_array_[static_cast<int>(Resource::kWoodsMan)].loadFromFile("resources/PNG/woodsman.png");
 }
 
 void ResourceManager::LoadAllFonts()
@@ -31,10 +23,11 @@ void ResourceManager::LoadAllFonts()
 #ifdef TRACY_ENABLE
 	ZoneScoped;
 #endif
+
 	default_font_ = sf::Font();
 	// Fonts -------------------
-	fonts_[FontsEnum::kButtonFont].loadFromFile("resources/fonts/Super Festival Personal Use.ttf");
-	fonts_[FontsEnum::kArial].loadFromFile("resources/fonts/arial.ttf");
+	font_array_[static_cast<int>(FontsEnum::kButtonFont)].loadFromFile("resources/fonts/Super Festival Personal Use.ttf");
+	font_array_[static_cast<int>(FontsEnum::kArial)].loadFromFile("resources/fonts/arial.ttf");
 }
 
 void ResourceManager::LoadAllCursorTextures()
@@ -42,10 +35,11 @@ void ResourceManager::LoadAllCursorTextures()
 #ifdef TRACY_ENABLE
 	ZoneScoped;
 #endif
+
 	default_cursor_texture_ = sf::Texture();
 	//Cursor textures ------------------------
-	cursor_textures_[CursorTextures::kCustomCursor].loadFromFile("resources/PNG/custom_cursor.png");
-	cursor_textures_[CursorTextures::kDefaultCursor].loadFromFile("resources/PNG/custom_basic_cursor.png");
+	cursor_array_[static_cast<int>(CursorTextures::kDefaultCursor)].loadFromFile("resources/PNG/custom_basic_cursor.png");
+	cursor_array_[static_cast<int>(CursorTextures::kCustomCursor)].loadFromFile("resources/PNG/custom_cursor.png");
 }
 
 //constructor
@@ -65,32 +59,22 @@ ResourceManager::ResourceManager()
 //get texture and returns it
 sf::Texture& ResourceManager::Texture(Resource resource_id)
 {
-	if (textures_.contains(resource_id))
+	if (static_cast<size_t>(resource_id) <= textures_array_.size() && static_cast<int>(resource_id) >= 0)
 	{
-		return textures_.at(resource_id);
+		return textures_array_.at(static_cast<int>(resource_id));
 	}
 	else
 	{
 		return blank_texture_;
 	}
-
-
-	/*if (textures_array_[static_cast<int>(resource_id)] <= textures_array_.size())
-	{
-		return textures_.at(resource_id);
-	}
-	else
-	{
-		return blank_texture_;
-	}*/
 }
 
 //get font and return it
 sf::Font& ResourceManager::Font(FontsEnum font_id)
 {
-	if (fonts_.contains(font_id))
+	if (static_cast<size_t>(font_id) <= font_array_.size() && static_cast<int>(font_id) >= 0)
 	{
-		return fonts_.at(font_id);
+		return font_array_.at(static_cast<int>(font_id));
 	}
 	else
 	{
@@ -101,13 +85,12 @@ sf::Font& ResourceManager::Font(FontsEnum font_id)
 //get cursor texture and return it
 sf::Texture& ResourceManager::CursorTexture(CursorTextures cursor_texture_id)
 {
-	if (cursor_textures_.contains(cursor_texture_id))
+	if (static_cast<size_t>(cursor_texture_id) <= cursor_array_.size() && static_cast<int>(cursor_texture_id) >= 0)
 	{
-		return cursor_textures_.at(cursor_texture_id);
+		return cursor_array_.at(static_cast<int>(cursor_texture_id));
 	}
 	else
 	{
 		return default_cursor_texture_;
 	}
-
 }

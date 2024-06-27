@@ -133,7 +133,7 @@ Tile Tilemap::TileAt(const sf::Vector2i pos)
 
 	const unsigned idx = pos.x * playground_size_u_.y + pos.y;
 
-	if(idx < 0 || idx > playground_size_u_.x * playground_size_u_.y || tiles_[idx].position().x < 0 || tiles_[idx].position().y > playground_size_u_.x)
+	if (idx < 0 || idx > playground_size_u_.x * playground_size_u_.y)
 	{
 		Tile default_tile(ResourceManager::Resource::kTerrainGround, sf::Vector2f(0.0f, 0.0f), false, false);
 		return default_tile;

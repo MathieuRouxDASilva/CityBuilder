@@ -60,7 +60,7 @@ void Game::PrepareCallBacks()
 		{
 			if (build_.is_active())
 			{
-				build_.AddBuilding(mouse_tile_coord_, ResourceManager::Resource::kTerrainDoor);
+				build_.AddBuilding(mouse_tile_coord_, ResourceManager::Resource::kBlueHouse);
 			}
 		};
 }

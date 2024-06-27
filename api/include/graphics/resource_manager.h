@@ -3,7 +3,6 @@
 
 #include <array>
 #include <SFML/Graphics.hpp>
-#include <unordered_map>
 
 class ResourceManager
 {
@@ -13,7 +12,7 @@ public:
 	{
 		kYellowButton,
 		kTerrainGround,
-		kTerrainDoor,
+		kBlueHouse,
 		kTerrainSunflowerGround,
 		kTerrainBasicGround,
 		kWoodsMan,
@@ -23,28 +22,29 @@ public:
 	enum class CursorTextures
 	{
 		kCustomCursor,
-		kDefaultCursor
+		kDefaultCursor,
+		kLength
 	};
 
 
 	enum class FontsEnum
 	{
 		kButtonFont,
-		kArial
+		kArial,
+		kLength
 	};
 
 private:
 	//textures
-	std::unordered_map<Resource, sf::Texture> textures_; //TODO transform in an array
-	std::array<sf::Texture, (int)Resource::kLength> textures_array_;
+	std::array<sf::Texture, static_cast<int>(Resource::kLength)> textures_array_;
 	sf::Texture blank_texture_;
 
 	//fonts
-	std::unordered_map<FontsEnum, sf::Font> fonts_; //TODO transform in an array
+	std::array<sf::Font, static_cast<int>(FontsEnum::kLength)> font_array_;
 	sf::Font default_font_;
 
 	//cursor texture
-	std::unordered_map<CursorTextures, sf::Texture> cursor_textures_; //TODO transform in an array
+	std::array<sf::Texture, static_cast<int>(CursorTextures::kLength)> cursor_array_;
 	sf::Texture default_cursor_texture_;
 
 	//load all textures
