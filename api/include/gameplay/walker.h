@@ -3,30 +3,38 @@
 #include <chrono>
 #include <SFML/Graphics/Transformable.hpp>
 
+#include "path.h"
 #include "graphics/drawing_the_entity.h"
 
 //class responsible for any entity mouvement 
 class Walker : public sf::Transformable, public DrawingEntity
 {
-	//TODO 1. destination, 2. framerate independency, 3. close to steering behavior 
 private:
 	//chrono variable
-	std::chrono::time_point<std::chrono::steady_clock> last_time_;
-	sf::Vector2f destination_;
 	float linear_speed_;
+	std::chrono::time_point<std::chrono::steady_clock> last_time_;
+	sf::Vector2f destination_ = getPosition();
+
+	Path path_;
 
 public:
-	Walker(ResourceManager::Resource texture, const sf::Vector2f& pos, float speed);
+	void SetTextureAndDebugShape();
 
-	//every second thing
+	sf::Vector2f LastDestination() const;
+
+	//constructor
+	Walker(const sf::Vector2f& pos, float speed);
+
+	//every second thing -> allow to move in a direction based on coords of a destination
 	void Tick();
 
 	//define virtual
 	void DefineTexture() override;
 
-
+	
 	//Set ----------------
 	void set_destination(sf::Vector2f pos);
 	void set_linear_speed(float speed);
+	void set_path(const Path& path);
 };
 #endif //API_GAMEPLAY_WALKER_H_

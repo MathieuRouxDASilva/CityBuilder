@@ -18,7 +18,7 @@ protected:
 public:
 	//constructor
 	Tile(const ResourceManager::Resource& resource, sf::Vector2f position, bool is_walkable, bool allow_buildings);
-
+	
 
 	//Get ------------------------------
 	bool is_Walkable() const;
@@ -28,6 +28,7 @@ public:
 	//Set ------------------------------
 	void set_texture(const sf::Texture& texture);
 	void set_is_walkable(bool is_walkable);
+	void set_allow_building(bool is_buildable);
 };
 
 

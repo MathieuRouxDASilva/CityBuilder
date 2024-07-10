@@ -13,6 +13,7 @@ void ResourceManager::LoadAllTextures()
 	textures_array_[static_cast<int>(Resource::kYellowButton)].loadFromFile("resources/PNG/button_blue_corner.png");
 	textures_array_[static_cast<int>(Resource::kTerrainGround)].loadFromFile("resources/PNG/ground.png");
 	textures_array_[static_cast<int>(Resource::kBlueHouse)].loadFromFile("resources/PNG/basic_blue_house.png");
+	textures_array_[static_cast<int>(Resource::kWoodHouse)].loadFromFile("resources/PNG/wood_house.png");
 	textures_array_[static_cast<int>(Resource::kTerrainSunflowerGround)].loadFromFile("resources/PNG/sunflower_ground.png");
 	textures_array_[static_cast<int>(Resource::kTerrainBasicGround)].loadFromFile("resources/PNG/basic_ground.png");
 	textures_array_[static_cast<int>(Resource::kWoodsMan)].loadFromFile("resources/PNG/woodsman.png");
@@ -42,18 +43,31 @@ void ResourceManager::LoadAllCursorTextures()
 	cursor_array_[static_cast<int>(CursorTextures::kCustomCursor)].loadFromFile("resources/PNG/custom_cursor.png");
 }
 
+static ResourceManager* instance = nullptr;
 //constructor
 ResourceManager::ResourceManager()
 {
 #ifdef TRACY_ENABLE
 	ZoneScoped;
 #endif
+	instance = this;
 
 	LoadAllTextures();
 
 	LoadAllFonts();
 
 	LoadAllCursorTextures();
+}
+
+//Destructor -> destroy instance
+ResourceManager::~ResourceManager()
+{
+	instance = nullptr;
+}
+
+ResourceManager& ResourceManager::Get()
+{
+	return *instance;
 }
 
 //get texture and returns it

@@ -12,6 +12,7 @@ private:
 	sf::Text economy_text_;
 	EconomyManager& economy_manager_;
 	size_t economy_amount_;
+	bool is_clicked_once_;
 
 	
 

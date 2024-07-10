@@ -14,6 +14,7 @@ class UiButton : public sf::Drawable, public sf::Transformable
 private:
 	sf::Sprite button_sprite_;
 	sf::Texture button_texture_;
+	bool is_clicked_once_;
 
 	//text and font
 	sf::Text button_text_;
@@ -36,8 +37,15 @@ public:
 	//function that handle events
 	void HandleEvent(const sf::Event& event);
 
+	//set other buttons on or off
+	void PopOtherButton(UiButton& button);
+
 	//Set ---------------------------
-	void SetScale(float factor_x, float factor_y);
+	void set_scale(float factor_x, float factor_y);
+	void set_is_clicked_once();
+
+	//GET ---------------------------
+	bool is_clicked_once() const;
 
 	//call back
 	std::function<void()> call_back_;

@@ -10,12 +10,16 @@ class DrawingEntity : public sf::Drawable
 {
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void SetupDebugShape();
+	//shape
+	sf::Sprite sprite_;
+	//debug shape
+	sf::RectangleShape debug_shape_;
 
 public:
-	sf::Sprite sprite_;
 
 	//drawing
-	DrawingEntity(ResourceManager::Resource texture, sf::Vector2f pos);
+	DrawingEntity(sf::Vector2f pos);
 	virtual void DefineTexture() = 0;
 
 };

@@ -8,11 +8,14 @@ class Building : public DrawingEntity
 {
 public:
 	//constructor
-	Building(const ResourceManager::Resource texture, const sf::Vector2f pos) : DrawingEntity(texture, pos){}
+	Building(const sf::Vector2f pos) : DrawingEntity(pos)
+	{
+		DefineTexture();
+	}
 
-
-	//define later
 	void DefineTexture() override;
+
+	void setTexture(const ResourceManager::Resource& resource);
 };
 
 

@@ -3,8 +3,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "building_manager.h"
-#include "woodsman.h"
-#include "graphics/Tilemap.h"
+#include "gameplay/nature_map.h"
+#include "graphics/tilemap.h"
 #include "UI/cursor.h"
 #include "UI/hovered_tile.h"
 #include "UI/uibutton.h"
@@ -16,13 +16,18 @@ private:
 	//window
 	sf::RenderWindow window_;
 
+	//Resources
+	ResourceManager resource_;
+
 	//tilemap data
 	Tilemap tilemap_;
+	Nature nature_;
 	sf::Vector2i tile_size_;
 	
 	//generate_button_ data
-	UiButton generate_button_;
-	UiButton build_mode_button_;
+	UiButton pop_other_button_button_;
+	UiButton build_mode_other_house_;
+	UiButton build_mode_wood_house_;
 
 	//Hovered tile frame setup
 	HoveredTile hover_;
@@ -43,8 +48,13 @@ private:
 	//economy
 	EconomyManager economy_;
 
+	//setup bools
+	bool is_active_;
+	bool is_buildable_;
+
 
 	void PrepareCallBacks();
+	void Events(const sf::Event& event);
 	void CalculateMousePosition();
 	void SetupCursorAndHoverPositionBasedOnMousePos();
 	void GraphicSetup();

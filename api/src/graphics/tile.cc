@@ -22,26 +22,30 @@ Tile::Tile(const ResourceManager::Resource& resource, const sf::Vector2f positio
 	allow_buildings_ = allow_buildings;
 }
 
+
+//SET
 void Tile::set_texture(const sf::Texture& texture)
 {
 	sprite_.setTexture(texture);
 }
-
 void Tile::set_is_walkable(const bool is_walkable)
 {
 	is_walkable_ = is_walkable;
 }
+void Tile::set_allow_building(const bool is_buildable)
+{
+	allow_buildings_ = is_buildable;
+}
 
+//GET
 bool Tile::is_Walkable() const
 {
 	return is_walkable_;
 }
-
 bool Tile::allow_buildings() const
 {
 	return allow_buildings_;
 }
-
 sf::Vector2f Tile::position() const
 {
 	return sprite_.getPosition();

@@ -10,6 +10,8 @@ UiButton::UiButton(const sf::Vector2f position, const std::string& name)
 	SetupButton(position);
 
 	SetupText(position, name);
+
+	is_clicked_once_ = false;
 }
 
 /**
@@ -70,7 +72,7 @@ void UiButton::HandleEvent(const sf::Event& event)
 
 			if (button_sprite_.getGlobalBounds().contains(mouse_x, mouse_y))
 			{
-				SetScale(1.0f, 1.0f);
+				set_scale(1.0f, 1.0f);
 				button_sprite_.setColor(sf::Color::White);
 			}
 		}
@@ -84,7 +86,7 @@ void UiButton::HandleEvent(const sf::Event& event)
 
 			if (button_sprite_.getGlobalBounds().contains(mouse_x, mouse_y))
 			{
-				SetScale(0.9f, 0.9f);
+				set_scale(0.9f, 0.9f);
 				button_sprite_.setColor(sf::Color::Green);
 				call_back_();
 			}
@@ -92,8 +94,32 @@ void UiButton::HandleEvent(const sf::Event& event)
 	}
 }
 
-//set button scale
-void UiButton::SetScale(const float factor_x, const float factor_y)
+void UiButton::PopOtherButton(UiButton& button)
+{
+	if (button.getScale() == sf::Vector2f(0.0f, 0.0f))
+	{
+		button.setScale(1.0f, 1.0f);
+	}
+	else
+	{
+		button.setScale(0.0f, 0.0f);
+	}
+}
+
+
+//GET
+bool UiButton::is_clicked_once() const
+{
+	return is_clicked_once_;
+}
+
+
+//SET
+void UiButton::set_scale(const float factor_x, const float factor_y)
 {
 	button_sprite_.setScale(factor_x, factor_y);
+}
+void UiButton::set_is_clicked_once()
+{
+	is_clicked_once_ = !is_clicked_once_;
 }

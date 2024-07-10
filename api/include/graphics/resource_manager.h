@@ -13,6 +13,7 @@ public:
 		kYellowButton,
 		kTerrainGround,
 		kBlueHouse,
+		kWoodHouse,
 		kTerrainSunflowerGround,
 		kTerrainBasicGround,
 		kWoodsMan,
@@ -55,20 +56,18 @@ private:
 
 	//load all cursors textures
 	void LoadAllCursorTextures();
+
 public:
-	static ResourceManager& Get()
-	{
-		static ResourceManager instance;
-		return instance;
-	}
 
 	//all constructor and stuff
 	ResourceManager();
 	ResourceManager(const ResourceManager&) = delete;
 	ResourceManager& operator=(const ResourceManager&) = delete;
+	~ResourceManager();
 	//static ResourceManager* instantce_ = nullptr;
 
 	//Get -----------------------
+	static ResourceManager& Get();
 	sf::Texture& Texture(Resource resource_id);
 	sf::Font& Font(FontsEnum font_id);
 	sf::Texture& CursorTexture(CursorTextures cursor_texture_id);
