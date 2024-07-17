@@ -1,4 +1,4 @@
-#include "gameplay/woodsman.h"
+#include "gameplay/mining_worker.h"
 #include "behavior_tree/bt_leaf.h"
 #include "behavior_tree/bt_selector.h"
 #include "gameplay/pathfinder_a_star.h"
@@ -8,7 +8,7 @@
 using namespace behavior_tree;
 
 //constructor
-WoodsMan::WoodsMan(const sf::Vector2f& pos, const float speed, Tilemap& map, EconomyManager& economy) : Walker(pos, speed), map_(map), economy_(economy)
+MiningWorker::MiningWorker(const sf::Vector2f& pos, const float speed, Tilemap& map, EconomyManager& economy) : Walker(pos, speed), map_(map), economy_(economy)
 {
 	home_destination_ = pos;
 	stamina_ = 15;
@@ -18,7 +18,7 @@ WoodsMan::WoodsMan(const sf::Vector2f& pos, const float speed, Tilemap& map, Eco
 }
 
 //copy constructor for problems when you add another character
-WoodsMan::WoodsMan(const WoodsMan& w): Walker(w), map_(w.map_), economy_(w.economy_)
+MiningWorker::MiningWorker(const MiningWorker& w) : Walker(w), map_(w.map_), economy_(w.economy_)
 {
 	stamina_ = w.stamina_;
 	home_destination_ = w.home_destination_;
@@ -26,13 +26,13 @@ WoodsMan::WoodsMan(const WoodsMan& w): Walker(w), map_(w.map_), economy_(w.econo
 }
 
 //set behavior tree
-void WoodsMan::SetBehaviorTreeNode()
+void MiningWorker::SetBehaviorTreeNode()
 {
 	stamina_ = 15;
 
-	Leaf* seek_wood = new Leaf([this]()
+	Leaf* seek_stone = new Leaf([this]()
 		{
-			return SeekWood();
+			return SeekStone();
 		}
 	);
 
@@ -48,9 +48,9 @@ void WoodsMan::SetBehaviorTreeNode()
 		}
 	);
 
-	Leaf* gather_wood = new Leaf([this]()
+	Leaf* gather_stone = new Leaf([this]()
 		{
-			return GatherWood();
+			return GatherStone();
 		}
 	);
 
@@ -66,34 +66,34 @@ void WoodsMan::SetBehaviorTreeNode()
 	std::unique_ptr<Sequence> main_sequence = std::make_unique<Sequence>();
 
 
-	main_sequence->AddAChildren(seek_wood);
-	main_sequence->AddAChildren(gather_wood);
+	main_sequence->AddAChildren(seek_stone);
+	main_sequence->AddAChildren(gather_stone);
 	main_sequence->AddAChildren(back_home);
 
 	tree_.AttachNode(main_sequence);
 
-	seek_wood = nullptr;
-	gather_wood = nullptr;
+	seek_stone = nullptr;
+	gather_stone = nullptr;
 	back_home = nullptr;
 	check_stamina = nullptr;
 }
 
-//go to closest tree
-Status WoodsMan::SeekWood()
+//go to closest stone
+Status MiningWorker::SeekStone()
 {
-	sf::Vector2f closest_tree;
+	sf::Vector2f closest_stone;
 	if (map_.is_map_generated())
 	{
-		closest_tree = map_.nature().GetATreeTilePosition(getPosition());
+		closest_stone = map_.nature().GetAStoneTilePosition(getPosition());
 
 	}
 
-	if (squaredMagnitude(closest_tree - path_.final_destination()) > std::numeric_limits<float>::epsilon())
+	if (squaredMagnitude(closest_stone - path_.final_destination()) > std::numeric_limits<float>::epsilon())
 	{
-		if(map_.is_map_generated())
+		if (map_.is_map_generated())
 		{
 			constexpr int offset = 16;
-			const Path p = pathfinder::CalculatePath(map_.GetWalkables(), LastDestination(), closest_tree, offset);
+			const Path p = pathfinder::CalculatePath(map_.GetWalkables(), LastDestination(), closest_stone, offset);
 			set_path(p);
 		}
 	}
@@ -115,7 +115,7 @@ Status WoodsMan::SeekWood()
 }
 
 //go back home
-Status WoodsMan::GoBackHome()
+Status MiningWorker::GoBackHome()
 {
 	const sf::Vector2f home_position = home_destination_;
 
@@ -134,8 +134,8 @@ Status WoodsMan::GoBackHome()
 	const float sq_mag = squaredMagnitude(getPosition() - path_.final_destination());
 	if (sq_mag < std::numeric_limits<float>::epsilon())
 	{
-		constexpr int wood_value = 20;
-		economy_.IncreaseWoodEconomyBy(wood_value);
+		constexpr int stone_value = 40;
+		economy_.IncreaseStoneEconomyBy(stone_value);
 		return Status::kSuccess;
 	}
 	else
@@ -145,9 +145,9 @@ Status WoodsMan::GoBackHome()
 }
 
 //collect it
-Status WoodsMan::GatherWood() const
+Status MiningWorker::GatherStone() const
 {
-	if (map_.nature().GatherTree(getPosition()))
+	if (map_.nature().GatherStone(getPosition()))
 	{
 		return Status::kSuccess;
 	}
@@ -155,7 +155,7 @@ Status WoodsMan::GatherWood() const
 }
 
 //woodman tick -> what happens every frame
-void WoodsMan::Tick()
+void MiningWorker::Tick()
 {
 	tree_.Tick();
 	////walker.Tick() to make sure that the npc still moves
@@ -163,7 +163,7 @@ void WoodsMan::Tick()
 }
 
 //override
-void WoodsMan::DefineTexture()
+void MiningWorker::DefineTexture()
 {
-	sprite_.setTexture(ResourceManager::Get().Texture(ResourceManager::Resource::kWoodsMan));
+	sprite_.setTexture(ResourceManager::Get().Texture(ResourceManager::Resource::kStoneMan));
 }

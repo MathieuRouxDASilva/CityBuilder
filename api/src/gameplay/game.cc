@@ -1,6 +1,4 @@
 #include "gameplay/game.h"
-#include "gameplay/path.h"
-#include "gameplay/pathfinder_a_star.h"
 #include "gameplay/woodsman.h"
 #include "UI/cursor.h"
 
@@ -10,7 +8,7 @@
 #endif
 
 //constructor
-Game::Game() : tilemap_(nature_), build_(tilemap_, economy_), ui_economy_(economy_)
+Game::Game() : view_(tilemap_), tilemap_(nature_), build_(tilemap_, economy_), ui_economy_(economy_)
 {
 #ifdef TRACY_ENABLE
 	ZoneScoped;
@@ -44,11 +42,11 @@ Game::Game() : tilemap_(nature_), build_(tilemap_, economy_), ui_economy_(econom
 	const auto button_position = sf::Vector2f(100.0f, window_.getSize().y - 100.0f);
 	pop_other_button_button_ = UiButton(button_position + sf::Vector2f(100.0f, 0.0f), "pop button");
 	//house button
-	build_mode_other_house_ = UiButton(button_position + sf::Vector2f(100.0f * 3, 0.0f), "second house");
-	build_mode_other_house_.setScale(0.0f, 0.0f);
-	//wood button
-	build_mode_wood_house_ = UiButton(button_position + sf::Vector2f(100.0f * 3, 0.0f) * 1.8f, "wood house");
+	build_mode_wood_house_ = UiButton(button_position + sf::Vector2f(100.0f * 3, 0.0f), "woods_house");
 	build_mode_wood_house_.setScale(0.0f, 0.0f);
+	//wood button
+	build_mode_stone_house_ = UiButton(button_position + sf::Vector2f(100.0f * 3, 0.0f) * 1.8f, "stone_house");
+	build_mode_stone_house_.setScale(0.0f, 0.0f);
 
 #ifdef TRACY_ENABLE
 	TracyCZoneEnd(buttons);
@@ -80,43 +78,11 @@ void Game::PrepareCallBacks()
 	//pop other buttons
 	pop_other_button_button_.call_back_ = [this]
 		{
-			pop_other_button_button_.PopOtherButton(build_mode_other_house_);
 			pop_other_button_button_.PopOtherButton(build_mode_wood_house_);
+			pop_other_button_button_.PopOtherButton(build_mode_stone_house_);
 		};
 
 	//setup activ buttons to pop blue houses
-	build_mode_other_house_.call_back_ = [this]
-		{
-			//if button isn't here -> do nothing
-			if (build_mode_other_house_.getScale() == sf::Vector2f(0.0f, 0.0f))
-			{
-				return;
-			}
-			//if button is clicked for the first time and the other one isn't -> activate build mode
-			if (!build_mode_other_house_.is_clicked_once() && !build_mode_wood_house_.is_clicked_once())
-			{
-				build_.set_is_active();
-				build_.set_is_blue_house_mode_on();
-				build_mode_other_house_.set_is_clicked_once();
-				cursor_.SwapTexture();
-			}
-			else if (build_mode_other_house_.is_clicked_once() && !build_mode_wood_house_.is_clicked_once()) //if pressed a second time -> deactivate it
-			{
-				build_.set_is_active();
-				build_.set_is_blue_house_mode_on();
-				build_mode_other_house_.set_is_clicked_once();
-				cursor_.SwapTexture();
-			}
-			else if (build_mode_wood_house_.is_clicked_once()) //go from one button to another easily
-			{
-				build_mode_wood_house_.set_is_clicked_once();
-				build_mode_other_house_.set_is_clicked_once();
-				build_.set_is_blue_house_mode_on();
-			}
-
-		};
-
-	//setup wood house
 	build_mode_wood_house_.call_back_ = [this]
 		{
 			//if button isn't here -> do nothing
@@ -124,26 +90,58 @@ void Game::PrepareCallBacks()
 			{
 				return;
 			}
+			//if button is clicked for the first time and the other one isn't -> activate build mode
+			if (!build_mode_wood_house_.is_clicked_once() && !build_mode_stone_house_.is_clicked_once())
+			{
+				build_.set_is_active();
+				build_.set_is_wood_house_mode_on();
+				build_mode_wood_house_.set_is_clicked_once();
+				cursor_.SwapTexture();
+			}
+			else if (build_mode_wood_house_.is_clicked_once() && !build_mode_stone_house_.is_clicked_once()) //if pressed a second time -> deactivate it
+			{
+				build_.set_is_active();
+				build_.set_is_wood_house_mode_on();
+				build_mode_wood_house_.set_is_clicked_once();
+				cursor_.SwapTexture();
+			}
+			else if (build_mode_stone_house_.is_clicked_once()) //go from one button to another easily
+			{
+				build_mode_wood_house_.set_is_clicked_once();
+				build_mode_stone_house_.set_is_clicked_once();
+				build_.set_is_wood_house_mode_on();
+			}
+
+		};
+
+	//setup wood house
+	build_mode_stone_house_.call_back_ = [this]
+		{
+			//if button isn't here -> do nothing
+			if (build_mode_stone_house_.getScale() == sf::Vector2f(0.0f, 0.0f))
+			{
+				return;
+			}
 			//if button is clicked for the first time -> activate build mode
-			if (!build_mode_wood_house_.is_clicked_once() && !build_mode_other_house_.is_clicked_once())
+			if (!build_mode_stone_house_.is_clicked_once() && !build_mode_wood_house_.is_clicked_once())
 			{
 				build_.set_is_active();
-				build_.set_is_wood_house_mode_on();
+				build_.set_is_stone_house_mode_on();
+				build_mode_stone_house_.set_is_clicked_once();
+				cursor_.SwapTexture();
+			}
+			else if (build_mode_stone_house_.is_clicked_once() && !build_mode_wood_house_.is_clicked_once()) //if pressed a second time -> deactivate it
+			{
+				build_.set_is_active();
+				build_.set_is_stone_house_mode_on();
 				build_mode_wood_house_.set_is_clicked_once();
 				cursor_.SwapTexture();
 			}
-			else if (build_mode_wood_house_.is_clicked_once() && !build_mode_other_house_.is_clicked_once()) //if pressed a second time -> deactivate it
+			else if (build_mode_wood_house_.is_clicked_once()) //go from one button to another easily
 			{
-				build_.set_is_active();
-				build_.set_is_wood_house_mode_on();
 				build_mode_wood_house_.set_is_clicked_once();
-				cursor_.SwapTexture();
-			}
-			else if (build_mode_other_house_.is_clicked_once()) //go from one button to another easily
-			{
-				build_mode_other_house_.set_is_clicked_once();
-				build_mode_wood_house_.set_is_clicked_once();
-				build_.set_is_wood_house_mode_on();
+				build_mode_stone_house_.set_is_clicked_once();
+				build_.set_is_stone_house_mode_on();
 			}
 		};
 
@@ -158,17 +156,9 @@ void Game::PrepareCallBacks()
 }
 
 //main game loop 
-void Game::GameLoop() //TODO try to put stuff in class like wood and walker
+void Game::GameLoop() //TODO poblem when too much entity and or or when not enought ressources -> BIG bug
 {
 	tilemap_.Generate();
-
-	constexpr float walker_speed = 50.0f;
-	WoodsMan wood(sf::Vector2f(500.0f, 500.0f), walker_speed, tilemap_);
-	wood.DefineTexture();
-
-
-	Walker walker(sf::Vector2f(400.0f, 400.0f), walker_speed);
-	walker.DefineTexture();
 
 	while (window_.isOpen())
 	{
@@ -184,38 +174,23 @@ void Game::GameLoop() //TODO try to put stuff in class like wood and walker
 			{
 				window_.close();
 			}
-			if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
-			{
-				//set destination
-				const auto destination = sf::Vector2f(
-					static_cast<float>(event.mouseButton.x),
-					static_cast<float>(event.mouseButton.y));
-
-
-				const Path path_for_woodman = pathfinder::CalculatePath(tilemap_.GetWalkables(), wood.LastDestination(), nature_.GetATreeTilePosition(), tile_size_.x);
-				const Path path_for_walker = pathfinder::CalculatePath(tilemap_.GetWalkables(), walker.LastDestination(), nature_.GetATreeTilePosition(), tile_size_.x);
-
-				//set destination to walkers
-				walker.set_path(path_for_walker);
-				wood.set_path(path_for_woodman);
-			}
 			Events(event);
+			view_.Zoom(event, window_);
+			view_.Move(event);
 		}
 
 		//setup ui
 		HoverColorSetup(is_active_, is_buildable_);
 		ui_economy_.SetupUiEconomyText();
 
-		walker.Tick();
-		wood.Tick();
-		build_.DoWalkersFromHousesTick();
-
+		build_.DoCharactersTick();
 		GraphicSetup();
 
-		window_.draw(wood);
-		window_.draw(walker);
+		
 
-
+		view_.MoveViewByMouse(window_, cursor_);
+		
+		//window_.setView(view_.getView());
 		// end the current frame
 		window_.display();
 
@@ -255,14 +230,11 @@ void Game::Events(const sf::Event& event)
 {
 	//personal events
 	pop_other_button_button_.HandleEvent(event);
-	build_mode_other_house_.HandleEvent(event);
 	build_mode_wood_house_.HandleEvent(event);
+	build_mode_stone_house_.HandleEvent(event);
 	tilemap_.HandleEvent(event);
 }
 
-//TODO find a way to put walkers event in here
-
-//all draw() and stuff
 void Game::GraphicSetup()
 {
 	// clear the window with black color
@@ -273,8 +245,8 @@ void Game::GraphicSetup()
 	window_.draw(nature_);
 	window_.draw(build_);
 	window_.draw(pop_other_button_button_);
-	window_.draw(build_mode_other_house_);
 	window_.draw(build_mode_wood_house_);
+	window_.draw(build_mode_stone_house_);
 	window_.draw(hover_);
 	window_.draw(ui_economy_);
 	window_.draw(cursor_);

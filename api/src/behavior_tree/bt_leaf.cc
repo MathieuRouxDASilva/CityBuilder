@@ -5,7 +5,7 @@ using namespace behavior_tree;
 Status Leaf::Process()
 {
 
-	if(leaf_action_ != nullptr)
+	if (leaf_action_ != nullptr)
 	{
 		return leaf_action_();
 	}

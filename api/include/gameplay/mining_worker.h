@@ -1,12 +1,12 @@
-#ifndef API_GAMEPLAY_WOODSMAN_H_
-#define API_GAMEPLAY_WOODSMAN_H_
+#ifndef API_GAMEPLAY_MINING_WORKER_H_
+#define API_GAMEPLAY_MINING_WORKER_H_
 #include "economy_manager.h"
 #include "walker.h"
+#include "behavior_tree/bt_node.h"
 #include "behavior_tree/bt_tree.h"
-#include "graphics/tilemap.h"
+#include "graphics/Tilemap.h"
 
-
-class WoodsMan : public Walker
+class MiningWorker : public Walker
 {
 private:
 	behavior_tree::Tree tree_;
@@ -19,18 +19,16 @@ private:
 	int stamina_;
 
 	//seek wood method for behavior tree
-	behavior_tree::Status SeekWood();
+	behavior_tree::Status SeekStone();
 	behavior_tree::Status GoBackHome();
-	behavior_tree::Status GatherWood() const;
+	behavior_tree::Status GatherStone() const;
 public:
 	//constructor
-	WoodsMan(const sf::Vector2f& pos, float speed, Tilemap& map, EconomyManager& economy);
-	WoodsMan(const WoodsMan& w);
+	MiningWorker(const sf::Vector2f& pos, float speed, Tilemap& map, EconomyManager& economy);
+	MiningWorker(const MiningWorker& w);
 
 	//init behavior tree
 	void SetBehaviorTreeNode();
-
-	
 
 	//Tick()
 	void Tick();
@@ -40,4 +38,8 @@ public:
 };
 
 
-#endif //API_GAMEPLAY_WOODSMAN_H_
+
+
+
+
+#endif //API_GAMEPLAY_MINING_WORKER_H_

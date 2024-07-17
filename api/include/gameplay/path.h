@@ -8,9 +8,10 @@ class Path
 {
 public:
 	//GET ----------
-	bool is_ended();
-	bool is_available();
-	bool is_ready();
+	[[nodiscard]] bool is_ended() const;
+	[[nodiscard]] bool is_available() const;
+	[[nodiscard]] bool is_ready() const;
+	[[nodiscard]] sf::Vector2f final_destination() const;
 
 	sf::Vector2f GetNextStep();
 	void SetSteps(std::vector<sf::Vector2f> steps);
@@ -20,6 +21,7 @@ public:
 private:
 	std::queue<sf::Vector2f> steps_;
 	sf::Vector2f next_step_;
+	sf::Vector2f final_destination_;
 
 	bool is_available_ = false;
 	bool is_ready_ = true;

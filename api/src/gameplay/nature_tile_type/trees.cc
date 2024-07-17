@@ -2,7 +2,7 @@
 
 void Tree::DefineTexture()
 {
-	sprite_.setTexture(ResourceManager::Get().Texture(ResourceManager::Resource::kBlueHouse));
+	sprite_.setTexture(ResourceManager::Get().Texture(ResourceManager::Resource::kTree));
 }
 
 void Tree::set_texture(const ResourceManager::Resource& resource) 
@@ -12,5 +12,5 @@ void Tree::set_texture(const ResourceManager::Resource& resource)
 
 sf::Vector2f Tree::position() const
 {
-	return sprite_.getGlobalBounds().getPosition();
+	return sprite_.getPosition();
 }

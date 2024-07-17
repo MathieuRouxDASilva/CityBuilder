@@ -47,3 +47,8 @@ void Cursor::set_default_cursor()
 {
 	cursor_sprite_.setTexture(ResourceManager::Get().CursorTexture(ResourceManager::CursorTextures::kDefaultCursor));
 }
+
+sf::Vector2f Cursor::position() const
+{
+	return cursor_sprite_.getGlobalBounds().getPosition();
+}

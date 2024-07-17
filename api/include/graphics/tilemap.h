@@ -41,11 +41,12 @@ public:
 	std::function<void()> clicked_tile_call_back_;
 
 	//Get ----------------------------------------
-	bool is_map_generated() const;
+	bool& is_map_generated();
 	Tile& TileAt(sf::Vector2i pos);
 	sf::Vector2u playground_tile_size_u() const;
+	sf::Vector2u playground_size_u() const;
 	std::vector<sf::Vector2f> GetWalkables();
-	Nature nature() const;
+	Nature& nature() const;
 };
 
 

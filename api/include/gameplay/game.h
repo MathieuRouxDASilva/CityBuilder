@@ -5,6 +5,7 @@
 #include "building_manager.h"
 #include "gameplay/nature_map.h"
 #include "graphics/tilemap.h"
+#include "graphics/view.h"
 #include "UI/cursor.h"
 #include "UI/hovered_tile.h"
 #include "UI/uibutton.h"
@@ -15,6 +16,7 @@ class Game
 private:
 	//window
 	sf::RenderWindow window_;
+	ViewPoint view_;
 
 	//Resources
 	ResourceManager resource_;
@@ -26,8 +28,8 @@ private:
 	
 	//generate_button_ data
 	UiButton pop_other_button_button_;
-	UiButton build_mode_other_house_;
 	UiButton build_mode_wood_house_;
+	UiButton build_mode_stone_house_;
 
 	//Hovered tile frame setup
 	HoveredTile hover_;
@@ -45,7 +47,7 @@ private:
 	//UI
 	UiEconomy ui_economy_;
 
-	//economy
+	//wood_economy
 	EconomyManager economy_;
 
 	//setup bools

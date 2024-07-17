@@ -1,13 +1,17 @@
-#include "gameplay/walker.h"
 #include <tracy/Tracy.hpp>
 
-#include "../../core/include/maths/vec2f.h"
+#include "gameplay/walker.h"
+#include "maths/vec2f.h"
 
 Walker::Walker(const sf::Vector2f& pos, const float speed) : DrawingEntity(pos)
 {
+	setPosition(pos);
 	SetTextureAndDebugShape();
 
 	set_linear_speed(speed);
+
+	destination_ = pos;
+
 	last_time_ = std::chrono::steady_clock::now();
 }
 
@@ -42,36 +46,26 @@ void Walker::Tick()
 	{
 		// Positionning -------------------------------
 		const sf::Vector2f actual_position = getPosition();
-		const sf::Vector2f direction = destination_ - actual_position;
-		//normalise
-		const auto normalized_direction = core::Vec2f(direction.x, direction.y);
-		normalized_direction.Normalise();
-		//magnitude
-		const auto magnitude_direction = core::Vec2f(direction.x, direction.y);
+		const sf::Vector2f direction = Normalized(destination_ - actual_position);
 
-
-		sf::Vector2f new_position = sf::Vector2f(0, 0);
+		sf::Vector2f new_position;
 		constexpr int tile_size = 16;
 
 
-		if (magnitude_direction.Magnitude() < 0.01f * tile_size)
+		if (Magnitude(destination_ - actual_position) < 0.1f * tile_size)
 		{
 			new_position = destination_;
 			destination_ = path_.GetNextStep();
 		}
 		else
 		{
-			new_position = actual_position + sf::Vector2f(
-				direction.x * linear_speed_ * elapsed_seconds.count(),
-				direction.y * linear_speed_ * elapsed_seconds.count()
-			);
+			new_position = actual_position + sf::Vector2f(direction * linear_speed_ * elapsed_seconds.count());
 		}
 
 		// Update positions ---------------------------
 		setPosition(new_position);
 		sprite_.setPosition(new_position);
 		debug_shape_.setPosition(new_position);
-
 	}
 }
 

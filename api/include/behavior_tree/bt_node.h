@@ -15,17 +15,30 @@ namespace behavior_tree
 
 	class Node
 	{
-	private:
-		std::vector<Node> all_childrens_;
+	public:
+		virtual ~Node() = default;
+		//function that does something depending on the node's task and return a status
+		virtual Status Process() = 0;
+	};
 
+
+	class NodeList : public Node
+	{
+	protected:
+		std::vector<Node*> all_childrens_;
+		size_t current_child_;
 
 	public:
-		//function that does something depending on the node's task and return a status
-		virtual Status Process();
+		NodeList();
+		~NodeList() override
+		{
+			for (auto& ptr : all_childrens_)
+			{
+				ptr = nullptr;
+			}
+		}
 
-		//add a children to the node
-		void AddAChildren(const Node& node);
-
+		void AddAChildren(Node* node);
 	};
 }
 

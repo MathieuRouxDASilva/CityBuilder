@@ -1,36 +1,6 @@
 #include "gameplay/pathfinder_a_star.h"
 #include <unordered_set>
-
-//TODO change these three in another file
-[[nodiscard]] inline float squaredMagnitude(sf::Vector2f v)
-{
-	return  (v.x * v.x + v.y * v.y);
-}
-
-[[nodiscard]] inline float Magnitude(sf::Vector2f v)
-{
-	return  std::sqrt(squaredMagnitude(v));
-}
-
-[[nodiscard]] inline sf::Vector2f Normalized(sf::Vector2f v)
-{
-
-	// IF/ELSE Style
-	float norm_x = 0;
-	if (v.x == 0) {
-		norm_x = 0;
-	}
-	else {
-		norm_x = v.x / Magnitude(v);
-	}
-
-	// Ternary style
-	float norm_y = v.y == 0 ? 0 : v.y / Magnitude(v);
-
-	return { norm_x, norm_y };
-
-}
-
+#include "../../core/include/maths/vec2f.h"
 
 static std::vector<sf::Vector2f> ConstructPath(const PathPoint& exit_point, const PathPoint* visited_points) //in this senario static means private to this file
 {
@@ -58,7 +28,7 @@ struct SfmlHash
 };
 
 //calculate path
-Path pathfinder::CalculatePath(std::vector<sf::Vector2f> positions, sf::Vector2f start, const sf::Vector2f end,
+Path pathfinder::CalculatePath(std::vector<sf::Vector2f> walkables_positions, sf::Vector2f start, const sf::Vector2f end,
 	const int offset)
 {
 	// - prepare the setup
@@ -72,8 +42,8 @@ Path pathfinder::CalculatePath(std::vector<sf::Vector2f> positions, sf::Vector2f
 	rounded_start.y = start.y - fmod(end.y, static_cast<float>(offset));
 
 	// -- Prepare the list with --
-	positions.emplace_back(start);
-	positions.emplace_back(rounded_end);
+	walkables_positions.emplace_back(start);
+	walkables_positions.emplace_back(rounded_end);
 
 	// --
 	std::priority_queue<PathPoint, std::vector<PathPoint>, std::greater<PathPoint>> open_queue;
@@ -107,14 +77,14 @@ Path pathfinder::CalculatePath(std::vector<sf::Vector2f> positions, sf::Vector2f
 			sf::Vector2f neighbourPos = current.position() + neighbour * static_cast<float>(offset);
 
 			// Tous les voisins
-			auto found_position = std::find_if(positions.begin(), positions.end(), [&neighbourPos](sf::Vector2f& pos)
+			auto found_position = std::find_if(walkables_positions.begin(), walkables_positions.end(), [&neighbourPos](sf::Vector2f& pos)
 				{
 					return pos == neighbourPos;
 				});
 
 			// Didn't found a valid neighbour
 			// Possible cases : outside of the map, empty lists, etc.
-			if (found_position != positions.end())
+			if (found_position != walkables_positions.end())
 			{
 				bool is_in_closed = closed_list.contains(*found_position);
 				bool is_in_open = open_list.contains(*found_position);

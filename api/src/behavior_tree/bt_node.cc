@@ -2,15 +2,14 @@
 
 using namespace behavior_tree;
 
-Status Node::Process()
+NodeList::NodeList()
 {
-	return Status::kFailure;
+	current_child_ = 0;
 }
 
-void Node::AddAChildren(const Node& node)
+void NodeList::AddAChildren(Node* node)
 {
 	//controls of the node ??? if needed
-
 
 	all_childrens_.emplace_back(node);
 }

@@ -2,8 +2,8 @@
 #define API_GAMEPLAY_BUILDING_MANAGER_H_
 #include "buildings.h"
 #include "economy_manager.h"
-#include "walker.h"
-#include "graphics/tile.h"
+#include "mining_worker.h"
+#include "woodsman.h"
 #include "graphics/tilemap.h"
 
 
@@ -24,14 +24,16 @@ private:
 	
 
 	//vectors
-	std::vector<Walker> walkers_;
+	std::vector<WoodsMan> walkers_;
+	std::vector<MiningWorker> workers_;
 	std::vector<Building> buildings_;
 
 	//check if it's possible
 	[[nodiscard]] bool CheckIfBuildable(sf::Vector2i mouse_pos) const;
 
 	//pop a guy
-	void PopAWalker(sf::Vector2f pos);
+	void PopAWoodMan(const sf::Vector2f& pos);
+	void PopAStoneMan(const sf::Vector2f& pos);
 
 	//setup building
 	void SetupNewBuilding(sf::Vector2i pos, ResourceManager::Resource resource, Building& new_building) const;
@@ -43,7 +45,7 @@ protected:
 public:
 
 	//do Tick() for all walkers
-	void DoWalkersFromHousesTick();
+	void DoCharactersTick();
 
 	//put building
 	void AddBuilding(sf::Vector2i pos);
@@ -56,10 +58,11 @@ public:
 
 	//Set -------------------------
 	void set_is_active();
-	void set_is_blue_house_mode_on();
 	void set_is_wood_house_mode_on();
+	void set_is_stone_house_mode_on();
 
 	//Get -------------------------
 	[[nodiscard]] bool is_active() const;
+	Tilemap& map() const;
 };
 #endif

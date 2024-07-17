@@ -17,6 +17,12 @@ void ResourceManager::LoadAllTextures()
 	textures_array_[static_cast<int>(Resource::kTerrainSunflowerGround)].loadFromFile("resources/PNG/sunflower_ground.png");
 	textures_array_[static_cast<int>(Resource::kTerrainBasicGround)].loadFromFile("resources/PNG/basic_ground.png");
 	textures_array_[static_cast<int>(Resource::kWoodsMan)].loadFromFile("resources/PNG/woodsman.png");
+	textures_array_[static_cast<int>(Resource::kStoneMan)].loadFromFile("resources/PNG/stoneman.png");
+	textures_array_[static_cast<int>(Resource::kTree)].loadFromFile("resources/PNG/tree.png");
+	textures_array_[static_cast<int>(Resource::kCutTree)].loadFromFile("resources/PNG/cut_tree.png");
+	textures_array_[static_cast<int>(Resource::kStone)].loadFromFile("resources/PNG/stone.png");
+	textures_array_[static_cast<int>(Resource::kCutStone)].loadFromFile("resources/PNG/mined_stone.png");
+	textures_array_[static_cast<int>(Resource::kBackPanel)].loadFromFile("resources/PNG/grey_panel.png");
 }
 
 void ResourceManager::LoadAllFonts()

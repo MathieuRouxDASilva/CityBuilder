@@ -2,35 +2,42 @@
 
 #include <iostream>
 
+
 using namespace behavior_tree;
 
-//what happens every frame
-void Tree::Tick()
+void Tree::Tick() const
 {
-	Status status;
 
-	if(root_ != nullptr)
+	if (root_ != nullptr)
 	{
-		status = root_->Process();
+		Status status = root_->Process();
 	}
 
-	switch (status)
-	{
-	case Status::kSuccess:
+	/*switch (status) {
+	case Status::kRunning:
 		break;
 	case Status::kFailure:
 		break;
-	case Status::kRunning:
+	case Status::kSuccess:
 		break;
 	default:
-		std::cout << "ah\n";
+		std::cout << "Whaaaaaat ?????" << std::endl;
 		break;
-	}
+	}*/
 
 }
 
-//add node to root
-void Tree::AddNode(Node* node)
+void Tree::AttachNode(std::unique_ptr<Selector>& node)
 {
-	root_ = node;
+	root_ = std::move(node);
+}
+
+void Tree::AttachNode(std::unique_ptr<Leaf>& node)
+{
+	root_ = std::move(node);
+}
+
+void Tree::AttachNode(std::unique_ptr<Sequence>& node)
+{
+	root_ = std::move(node);
 }

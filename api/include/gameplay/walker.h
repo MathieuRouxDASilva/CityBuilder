@@ -15,6 +15,7 @@ private:
 	std::chrono::time_point<std::chrono::steady_clock> last_time_;
 	sf::Vector2f destination_ = getPosition();
 
+protected:
 	Path path_;
 
 public:
@@ -31,7 +32,7 @@ public:
 	//define virtual
 	void DefineTexture() override;
 
-	
+
 	//Set ----------------
 	void set_destination(sf::Vector2f pos);
 	void set_linear_speed(float speed);

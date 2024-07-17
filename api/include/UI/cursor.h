@@ -28,6 +28,7 @@ public:
 	void set_custom_cursor();
 	void set_default_cursor();
 
-
+	//Get ----------------------
+	sf::Vector2f position() const;
 };
 #endif

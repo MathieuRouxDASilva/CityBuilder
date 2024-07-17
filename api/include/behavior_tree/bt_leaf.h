@@ -6,7 +6,7 @@
 
 namespace behavior_tree
 {
-	class Leaf final : public Node
+	class Leaf final : public NodeList
 	{
 	private:
 		//call_back_thing
@@ -17,8 +17,7 @@ namespace behavior_tree
 		Leaf(const std::function<Status()>& func): leaf_action_(func){}
 
 		Status Process() override;
-
-
+		~Leaf() override = default;
 	};
 }
 

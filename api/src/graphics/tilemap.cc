@@ -54,7 +54,7 @@ void Tilemap::Generate()
 }
 
 //add tile
-void Tilemap::AddingTileBasedOnRandom(const sf::Vector2f pos) //TODO make forest, stone stuff and other stuff based on notion
+void Tilemap::AddingTileBasedOnRandom(const sf::Vector2f pos)
 {
 	//random setup
 	const int rnd = uniform_dist(e1);
@@ -62,6 +62,13 @@ void Tilemap::AddingTileBasedOnRandom(const sf::Vector2f pos) //TODO make forest
 	if(rnd == 100)
 	{
 		nature_.AddATreeAt(pos);
+
+		Tile new_tile(ResourceManager::Resource::kTerrainGround, pos, false, false);
+		tiles_.emplace_back(new_tile);
+	}
+	else if (rnd == 0)
+	{
+		nature_.AddAStoneAt(pos);
 
 		Tile new_tile(ResourceManager::Resource::kTerrainGround, pos, false, false);
 		tiles_.emplace_back(new_tile);
@@ -76,14 +83,14 @@ void Tilemap::AddingTileBasedOnRandom(const sf::Vector2f pos) //TODO make forest
 
 			tiles_.emplace_back(new_tile);
 		}
-		else if (rnd > 60) //if > 5 -> basic green tile added
+		else if (rnd >= 50 && rnd < 95) //if > 5 -> basic green tile added
 		{
 			Tile new_tile(ResourceManager::Resource::kTerrainBasicGround,
 				pos, true, true);
 
 			tiles_.emplace_back(new_tile);
 		}
-		else if (rnd >= 50) //if 5 -> sunflower texture added (can't put a building here)
+		else if (rnd >= 95) //if 5 -> sunflower texture added (can't put a building here)
 		{
 			//set the tile
 			Tile new_tile(ResourceManager::Resource::kTerrainSunflowerGround,
@@ -163,7 +170,11 @@ sf::Vector2u Tilemap::playground_tile_size_u() const
 {
 	return playground_tile_size_u_;
 }
-bool Tilemap::is_map_generated() const
+sf::Vector2u Tilemap::playground_size_u() const
+{
+	return playground_size_u_;
+}
+bool& Tilemap::is_map_generated()
 {
 	return is_map_generated_;
 }
@@ -182,7 +193,7 @@ std::vector<sf::Vector2f> Tilemap::GetWalkables()
 
 	return walkables;
 }
-Nature Tilemap::nature() const
+Nature& Tilemap::nature() const
 {
 	return nature_;
 }

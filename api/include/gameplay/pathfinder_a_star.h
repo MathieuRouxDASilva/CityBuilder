@@ -46,7 +46,7 @@ const std::array<sf::Vector2f, 4> kNeighbours =
 
 namespace pathfinder
 {
-	Path CalculatePath(std::vector<sf::Vector2f> positions, sf::Vector2f start, sf::Vector2f end, int offset);
+	Path CalculatePath(std::vector<sf::Vector2f> walkables_positions, sf::Vector2f start, sf::Vector2f end, int offset);
 };
 
 #endif //API_GAMEPLAY_PATHFINDER_A_STAR_H_

@@ -17,6 +17,12 @@ public:
 		kTerrainSunflowerGround,
 		kTerrainBasicGround,
 		kWoodsMan,
+		kStoneMan,
+		kTree,
+		kCutTree,
+		kStone,
+		kCutStone,
+		kBackPanel,
 		kLength
 	};
 

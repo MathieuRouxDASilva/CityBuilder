@@ -3,13 +3,13 @@
 #include <functional>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
 
+
 //class that wil make a generate_button_ appear in sfml window
-class UiButton : public sf::Drawable, public sf::Transformable
+class UiButton : public sf::Drawable, public sf::Transformable //TODO make better buttons
 {
 private:
 	sf::Sprite button_sprite_;

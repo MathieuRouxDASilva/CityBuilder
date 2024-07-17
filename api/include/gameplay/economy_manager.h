@@ -5,19 +5,23 @@
 class EconomyManager
 {
 private:
-	size_t economy_;
+	size_t wood_economy_;
+	size_t stone_economy_;
 
 public:
 	//constructor
 	EconomyManager();
 
-	//reduce/increase economy by a certain number
-	void ReduceEconomyBy(size_t number);
-	void IncreaseEconomyBy(size_t number);
+	//reduce/increase wood_economy by a certain number
+	void ReduceWoodEconomyBy(size_t number);
+	void IncreaseWoodEconomyBy(size_t number);
+
+	void ReduceStoneEconomyBy(size_t number);
+	void IncreaseStoneEconomyBy(size_t number);
 
 	//Get -------------------
-	[[nodiscard]] size_t economy() const;
-
+	[[nodiscard]] size_t wood_economy() const;
+	[[nodiscard]] size_t stone_economy() const;
 };
 
 
