@@ -1,9 +1,20 @@
+#include <random>
+
 #include "gameplay/woodsman.h"
 #include "behavior_tree/bt_leaf.h"
-#include "behavior_tree/bt_selector.h"
 #include "gameplay/pathfinder_a_star.h"
 #include "maths/vec2f.h"
 #include "behavior_tree/bt_sequence.h"
+
+static int& RandomNumber()
+{
+	std::random_device r;
+	std::default_random_engine e1(r());
+
+	std::uniform_int_distribution uniform_dist(1, 5);
+	int rnd = uniform_dist(e1);
+	return rnd;
+}
 
 using namespace behavior_tree;
 
@@ -60,11 +71,7 @@ void WoodsMan::SetBehaviorTreeNode()
 		}
 	);
 
-	const auto main_selector = new Selector();
-	//const auto main_sequence = new Sequence();
-
-	std::unique_ptr<Sequence> main_sequence = std::make_unique<Sequence>();
-
+	auto main_sequence = std::make_unique<Sequence>();
 
 	main_sequence->AddAChildren(seek_wood);
 	main_sequence->AddAChildren(gather_wood);
@@ -134,7 +141,7 @@ Status WoodsMan::GoBackHome()
 	const float sq_mag = squaredMagnitude(getPosition() - path_.final_destination());
 	if (sq_mag < std::numeric_limits<float>::epsilon())
 	{
-		constexpr int wood_value = 20;
+		const int wood_value = RandomNumber();
 		economy_.IncreaseWoodEconomyBy(wood_value);
 		return Status::kSuccess;
 	}

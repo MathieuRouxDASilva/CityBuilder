@@ -11,9 +11,11 @@ public:
 	enum class Resource
 	{
 		kYellowButton,
+		kGreyButton,
+		kBuildingSprite,
 		kTerrainGround,
-		kBlueHouse,
 		kWoodHouse,
+		kStoneHouse,
 		kTerrainSunflowerGround,
 		kTerrainBasicGround,
 		kWoodsMan,

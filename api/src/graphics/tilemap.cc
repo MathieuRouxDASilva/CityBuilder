@@ -16,7 +16,7 @@ Tilemap::Tilemap(Nature& nature) : nature_(nature)
 	ZoneScoped;
 #endif
 	constexpr size_t tilemap_size_x = 100;
-	constexpr size_t tilemap_size_y = 50;
+	constexpr size_t tilemap_size_y = 100;
 	constexpr size_t tile_size = 16;
 
 	//define size of tilemap and stuff

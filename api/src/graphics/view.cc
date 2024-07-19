@@ -69,6 +69,8 @@ sf::Vector2f ViewPoint::ClampCenterToBounds(const sf::Vector2f& center) const
 
 void ViewPoint::Move(const sf::Event& event)
 {
+	sf::Vector2f center = view_.getCenter();
+
 	if (event.type == sf::Event::KeyPressed)
 	{
 		sf::Vector2f movement(0, 0);
@@ -91,10 +93,16 @@ void ViewPoint::Move(const sf::Event& event)
 		}
 
 		const sf::Vector2f new_center = view_.getCenter() + movement;
+
 		if (IsWithinBounds(new_center))
 		{
 			view_.setCenter(new_center);
 			pos_ = new_center;
+		}
+		else //keep camera in bounds
+		{
+			view_.setCenter(center);
+			pos_ = center;
 		}
 	}
 }
@@ -126,7 +134,7 @@ void ViewPoint::Zoom(const sf::Event& event, const sf::RenderWindow& window)
 		if (camera_modification_)
 		{
 			// Adjust the view size based on the new zoom level
-			view_.setSize(800 * zoom_, 600 * zoom_);
+			view_.setSize(1500 * zoom_, 800 * zoom_);
 
 			sf::Vector2f new_center = world_pos + (view_.getCenter() - world_pos) * ((event.mouseWheelScroll.delta > 0) ? 0.9f : 1.1f);
 
@@ -138,10 +146,12 @@ void ViewPoint::Zoom(const sf::Event& event, const sf::RenderWindow& window)
 	}
 }
 
-void ViewPoint::MoveViewByMouse(const sf::RenderWindow& window, const Cursor& cursor)
+void ViewPoint::MoveViewByMouse(const sf::RenderWindow& window)
 {
+	const sf::Vector2f center = view_.getCenter();
+
 	// Get the current mouse position in window coordinates
-	const auto pixel_pos = static_cast<sf::Vector2i>(cursor.position());
+	const auto pixel_pos = sf::Mouse::getPosition(window);
 
 	// Get the center of the window
 	const sf::Vector2u window_size = window.getSize();
@@ -163,10 +173,15 @@ void ViewPoint::MoveViewByMouse(const sf::RenderWindow& window, const Cursor& cu
 			pos_.y += mouse_delta.y * camera_speed_.y;  // Speed value, Adjust the factor as needed
 		}
 
-		const sf::Vector2f new_center = pos_;
-		if (IsWithinBounds(new_center))
+		
+		if (IsWithinBounds(pos_))
 		{
-			view_.setCenter(new_center);
+			view_.setCenter(pos_);
+		}
+		else
+		{
+			view_.setCenter(center);
+			pos_ = center;
 		}
 	}
 }

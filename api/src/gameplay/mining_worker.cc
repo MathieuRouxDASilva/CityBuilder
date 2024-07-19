@@ -1,9 +1,20 @@
+#include <random>
+
 #include "gameplay/mining_worker.h"
 #include "behavior_tree/bt_leaf.h"
-#include "behavior_tree/bt_selector.h"
 #include "gameplay/pathfinder_a_star.h"
 #include "maths/vec2f.h"
 #include "behavior_tree/bt_sequence.h"
+
+static int& RandomNumber()
+{
+	std::random_device r;
+	std::default_random_engine e1(r());
+
+	std::uniform_int_distribution uniform_dist(1, 5);
+	int rnd = uniform_dist(e1);
+	return rnd;
+}
 
 using namespace behavior_tree;
 
@@ -60,9 +71,6 @@ void MiningWorker::SetBehaviorTreeNode()
 		}
 	);
 
-	const auto main_selector = new Selector();
-	//const auto main_sequence = new Sequence();
-
 	std::unique_ptr<Sequence> main_sequence = std::make_unique<Sequence>();
 
 
@@ -72,8 +80,8 @@ void MiningWorker::SetBehaviorTreeNode()
 
 	tree_.AttachNode(main_sequence);
 
-	seek_stone = nullptr;
 	gather_stone = nullptr;
+	seek_stone = nullptr;
 	back_home = nullptr;
 	check_stamina = nullptr;
 }
@@ -134,7 +142,7 @@ Status MiningWorker::GoBackHome()
 	const float sq_mag = squaredMagnitude(getPosition() - path_.final_destination());
 	if (sq_mag < std::numeric_limits<float>::epsilon())
 	{
-		constexpr int stone_value = 40;
+		const int stone_value = RandomNumber();
 		economy_.IncreaseStoneEconomyBy(stone_value);
 		return Status::kSuccess;
 	}

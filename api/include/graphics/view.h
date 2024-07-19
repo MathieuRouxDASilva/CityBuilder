@@ -7,7 +7,6 @@
 #include <SFML/Window/Window.hpp>
 
 #include "graphics/tilemap.h"
-#include "UI/cursor.h"
 
 class ViewPoint
 {
@@ -41,12 +40,16 @@ public:
     {
         return view_;
     }
+    sf::Vector2f pos() const
+    {
+        return pos_;
+    }
 
     void Move(const sf::Event& event);
 
     void Zoom(const sf::Event& event, const sf::RenderWindow& window);
 
-    void MoveViewByMouse(const sf::RenderWindow& window, const Cursor& cursor);
+    void MoveViewByMouse(const sf::RenderWindow& window);
 
     //void ClampView();
 };

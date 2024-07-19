@@ -14,8 +14,8 @@ class BuildingManager : public sf::Drawable
 private:
 	//all bools
 	bool is_active_;
-	bool is_blue_house_mode_on_;
 	bool is_wood_house_mode_on_;
+	bool is_stone_house_mode_on_;
 
 	//other stuff so that it speaks in other classes
 	size_t normal_build_cost_;
@@ -24,7 +24,7 @@ private:
 	
 
 	//vectors
-	std::vector<WoodsMan> walkers_;
+	std::vector<WoodsMan> woods_man_;
 	std::vector<MiningWorker> workers_;
 	std::vector<Building> buildings_;
 
@@ -59,10 +59,14 @@ public:
 	//Set -------------------------
 	void set_is_active();
 	void set_is_wood_house_mode_on();
+	void set_is_wood_house_mode_off();
 	void set_is_stone_house_mode_on();
+	void set_is_stone_house_mode_off();
+	void DeSetAll();
 
 	//Get -------------------------
 	[[nodiscard]] bool is_active() const;
-	Tilemap& map() const;
+	[[nodiscard]] Tilemap& map() const;
+	[[nodiscard]] std::vector<WoodsMan> woodman() const;
 };
 #endif

@@ -9,11 +9,11 @@ normal_build_cost_(50), tilemap_(tilemap), economy_manager_(economy)
 	buildings_.clear();
 	buildings_.reserve(tilemap_.playground_tile_size_u().x * tilemap_.playground_tile_size_u().y);
 
-	walkers_.clear();
-	walkers_.reserve(tilemap_.playground_tile_size_u().x * tilemap_.playground_tile_size_u().y);
+	woods_man_.clear();
+	woods_man_.reserve(tilemap_.playground_tile_size_u().x * tilemap_.playground_tile_size_u().y);
 
-	is_blue_house_mode_on_ = false;
 	is_wood_house_mode_on_ = false;
+	is_stone_house_mode_on_ = false;
 }
 
 //setup new building
@@ -50,19 +50,19 @@ void BuildingManager::AddBuilding(const sf::Vector2i pos)
 			//check tile pos
 			const auto positon = tilemap_.TileAt(pos).position();
 
-			if (is_blue_house_mode_on_ && economy_manager_.stone_economy() >= normal_build_cost_)
+			if (is_wood_house_mode_on_ && economy_manager_.stone_economy() >= normal_build_cost_)
 			{
-				SetBuildingTexture(ResourceManager::Resource::kBlueHouse, positon, pos);
+				SetBuildingTexture(ResourceManager::Resource::kWoodHouse, positon, pos);
 				PopAWoodMan(positon);
 				//cost taken
 				economy_manager_.ReduceWoodEconomyBy(normal_build_cost_);
 				economy_manager_.ReduceStoneEconomyBy(normal_build_cost_);
 			}
-			else if (is_wood_house_mode_on_)
+			else if (is_stone_house_mode_on_)
 			{
 				if (economy_manager_.wood_economy() >= normal_build_cost_ * 2)
 				{
-					SetBuildingTexture(ResourceManager::Resource::kWoodHouse, positon, pos);
+					SetBuildingTexture(ResourceManager::Resource::kStoneHouse, positon, pos);
 					PopAStoneMan(positon);
 					//cost taken
 					economy_manager_.ReduceWoodEconomyBy(normal_build_cost_ * 2);
@@ -92,7 +92,7 @@ void BuildingManager::PopAWoodMan(const sf::Vector2f& pos)
 	constexpr int flat_speed = 300;
 	WoodsMan new_wood_man(pos, flat_speed, map(), economy_manager_);
 
-	walkers_.emplace_back(new_wood_man);
+	woods_man_.emplace_back(new_wood_man);
 }
 
 //spawn a worker guy
@@ -107,7 +107,7 @@ void BuildingManager::PopAStoneMan(const sf::Vector2f& pos)
 //draw
 void BuildingManager::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for (const auto& w : walkers_)
+	for (const auto& w : woods_man_)
 	{
 		target.draw(w, states);
 	}
@@ -125,9 +125,9 @@ void BuildingManager::draw(sf::RenderTarget& target, sf::RenderStates states) co
 //do Ticks()
 void BuildingManager::DoCharactersTick()
 {
-	if (!walkers_.empty())
+	if (!woods_man_.empty())
 	{
-		for (auto& w : walkers_)
+		for (auto& w : woods_man_)
 		{
 			w.Tick();
 		}
@@ -148,23 +148,24 @@ void BuildingManager::set_is_active()
 }
 void BuildingManager::set_is_wood_house_mode_on()
 {
-	is_blue_house_mode_on_ = !is_blue_house_mode_on_;
-
-	//make sure only one mode is on
-	if (is_wood_house_mode_on_ && is_blue_house_mode_on_)
-	{
-		is_wood_house_mode_on_ = false;
-	}
+	is_wood_house_mode_on_ = true;
+}
+void BuildingManager::set_is_wood_house_mode_off()
+{
+	is_wood_house_mode_on_ = false;
 }
 void BuildingManager::set_is_stone_house_mode_on()
 {
-	is_wood_house_mode_on_ = !is_wood_house_mode_on_;
-
-	//make sure only one mode is on
-	if (is_blue_house_mode_on_ && is_wood_house_mode_on_)
-	{
-		is_blue_house_mode_on_ = false;
-	}
+	is_stone_house_mode_on_ = true;
+}
+void BuildingManager::set_is_stone_house_mode_off()
+{
+	is_stone_house_mode_on_ = false;
+}
+void BuildingManager::DeSetAll()
+{
+	is_wood_house_mode_on_ = false;
+	is_stone_house_mode_on_ = false;
 }
 
 //GET
@@ -177,4 +178,8 @@ Tilemap& BuildingManager::map() const
 	Tilemap& map = tilemap_;
 
 	return map;
+}
+std::vector<WoodsMan> BuildingManager::woodman() const
+{
+	return woods_man_;
 }

@@ -11,9 +11,11 @@ void ResourceManager::LoadAllTextures()
 	blank_texture_ = sf::Texture();
 	// Textures -----------------
 	textures_array_[static_cast<int>(Resource::kYellowButton)].loadFromFile("resources/PNG/button_blue_corner.png");
+	textures_array_[static_cast<int>(Resource::kGreyButton)].loadFromFile("resources/PNG/grey_button.png");
+	textures_array_[static_cast<int>(Resource::kBuildingSprite)].loadFromFile("resources/PNG/building_sprite.png");
 	textures_array_[static_cast<int>(Resource::kTerrainGround)].loadFromFile("resources/PNG/ground.png");
-	textures_array_[static_cast<int>(Resource::kBlueHouse)].loadFromFile("resources/PNG/basic_blue_house.png");
-	textures_array_[static_cast<int>(Resource::kWoodHouse)].loadFromFile("resources/PNG/wood_house.png");
+	textures_array_[static_cast<int>(Resource::kWoodHouse)].loadFromFile("resources/PNG/basic_blue_house.png");
+	textures_array_[static_cast<int>(Resource::kStoneHouse)].loadFromFile("resources/PNG/wood_house.png");
 	textures_array_[static_cast<int>(Resource::kTerrainSunflowerGround)].loadFromFile("resources/PNG/sunflower_ground.png");
 	textures_array_[static_cast<int>(Resource::kTerrainBasicGround)].loadFromFile("resources/PNG/basic_ground.png");
 	textures_array_[static_cast<int>(Resource::kWoodsMan)].loadFromFile("resources/PNG/woodsman.png");

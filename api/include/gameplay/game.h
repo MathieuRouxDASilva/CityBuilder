@@ -10,12 +10,14 @@
 #include "UI/hovered_tile.h"
 #include "UI/uibutton.h"
 #include "UI/ui_economy.h"
+#include "UI/ui_shapes.h"
 
 class Game
 {
 private:
 	//window
 	sf::RenderWindow window_;
+	sf::View fix_view_;
 	ViewPoint view_;
 
 	//Resources
@@ -46,6 +48,7 @@ private:
 
 	//UI
 	UiEconomy ui_economy_;
+	UiShapes ui_shapes_;
 
 	//wood_economy
 	EconomyManager economy_;
@@ -56,6 +59,8 @@ private:
 
 
 	void PrepareCallBacks();
+	void UiGraphic();
+	void SetAllUiShapesForFeedBack();
 	void Events(const sf::Event& event);
 	void CalculateMousePosition();
 	void SetupCursorAndHoverPositionBasedOnMousePos();

@@ -9,3 +9,9 @@ void CutTree::set_texture(const ResourceManager::Resource& resource)
 {
 	sprite_.setTexture(ResourceManager::Get().Texture(resource));
 }
+
+//GET
+sf::Vector2f CutTree::position() const
+{
+	return sprite_.getPosition();
+}

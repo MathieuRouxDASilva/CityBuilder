@@ -18,6 +18,9 @@ public:
 	void DefineTexture() override;
 
 	void set_texture(const ResourceManager::Resource& resource);
+
+	//Get ------------------------
+	sf::Vector2f position() const;
 };
 
 

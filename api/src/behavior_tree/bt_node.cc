@@ -12,4 +12,5 @@ void NodeList::AddAChildren(Node* node)
 	//controls of the node ??? if needed
 
 	all_childrens_.emplace_back(node);
+	node = nullptr;
 }

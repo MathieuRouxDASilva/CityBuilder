@@ -1,6 +1,6 @@
 #include "gameplay/pathfinder_a_star.h"
 #include <unordered_set>
-#include "../../core/include/maths/vec2f.h"
+#include "maths/vec2f.h"
 
 static std::vector<sf::Vector2f> ConstructPath(const PathPoint& exit_point, const PathPoint* visited_points) //in this senario static means private to this file
 {
@@ -14,6 +14,7 @@ static std::vector<sf::Vector2f> ConstructPath(const PathPoint& exit_point, cons
 		path.push_back(point.position());
 	}
 	std::reverse(path.begin(), path.end());
+	visited_points = nullptr;
 	return path;
 }
 
@@ -74,12 +75,12 @@ Path pathfinder::CalculatePath(std::vector<sf::Vector2f> walkables_positions, sf
 		for (auto neighbour : kNeighbours)
 		{
 			// ReSharper disable once CppCStyleCast
-			sf::Vector2f neighbourPos = current.position() + neighbour * static_cast<float>(offset);
+			sf::Vector2f neighbour_pos = current.position() + neighbour * static_cast<float>(offset);
 
 			// Tous les voisins
-			auto found_position = std::find_if(walkables_positions.begin(), walkables_positions.end(), [&neighbourPos](sf::Vector2f& pos)
+			auto found_position = std::find_if(walkables_positions.begin(), walkables_positions.end(), [&neighbour_pos](sf::Vector2f& pos)
 				{
-					return pos == neighbourPos;
+					return pos == neighbour_pos;
 				});
 
 			// Didn't found a valid neighbour
@@ -107,12 +108,6 @@ Path pathfinder::CalculatePath(std::vector<sf::Vector2f> walkables_positions, sf
 		}
 
 	}
-
-	//// -
-	//std::cout << "Didn't find the path" << std::endl;
-	//std::cout << "Start : " << start.x << " " << start.y << std::endl;
-	//std::cout << "End : " << end.x << " " << end.y << std::endl;
-	//std::cout << "Rounded end : " << rounded_end.x << " " << rounded_end.y << std::endl;
 
 	return path;
 

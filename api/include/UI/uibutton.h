@@ -3,19 +3,22 @@
 #include <functional>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "graphics/resource_manager.h"
 
 
 //class that wil make a generate_button_ appear in sfml window
-class UiButton : public sf::Drawable, public sf::Transformable //TODO make better buttons
+class UiButton : public sf::Drawable, public sf::Transformable 
 {
 private:
 	sf::Sprite button_sprite_;
 	sf::Texture button_texture_;
+	sf::RectangleShape simbol_shape_;
 	bool is_clicked_once_;
-
+	
 	//text and font
 	sf::Text button_text_;
 
@@ -40,12 +43,17 @@ public:
 	//set other buttons on or off
 	void PopOtherButton(UiButton& button);
 
+	//shape
+	void SimbolShapeSetup(const ResourceManager::Resource& resource);
+
 	//Set ---------------------------
 	void set_scale(float factor_x, float factor_y);
-	void set_is_clicked_once();
+	void set_is_clicked_on();
+	void set_is_clicked_off();
 
 	//GET ---------------------------
 	bool is_clicked_once() const;
+	sf::Sprite shape() const;
 
 	//call back
 	std::function<void()> call_back_;

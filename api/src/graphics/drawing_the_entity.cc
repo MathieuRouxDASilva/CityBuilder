@@ -6,7 +6,7 @@
 void DrawingEntity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(sprite_, states);
-	target.draw(debug_shape_, states);
+	//target.draw(debug_shape_, states);
 }
 
 void DrawingEntity::SetupDebugShape()

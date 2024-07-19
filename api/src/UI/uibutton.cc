@@ -21,7 +21,7 @@ void UiButton::SetupButton(const sf::Vector2f position)
 {
 	//setup button 1 -> generate map
 	button_sprite_.setColor(sf::Color::White);
-	button_sprite_.setTexture(ResourceManager::Get().Texture(ResourceManager::Resource::kYellowButton));
+	button_sprite_.setTexture(ResourceManager::Get().Texture(ResourceManager::Resource::kGreyButton));
 	button_sprite_.setOrigin(button_sprite_.getLocalBounds().getSize().x / 2.0f, button_sprite_.getLocalBounds().getSize().y / 2.0f);
 	button_sprite_.setPosition(position);
 }
@@ -52,6 +52,7 @@ void UiButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	target.draw(button_sprite_, states);
 	target.draw(button_text_, states);
+	target.draw(simbol_shape_, states);
 }
 
 //handle event init
@@ -106,11 +107,27 @@ void UiButton::PopOtherButton(UiButton& button)
 	}
 }
 
+//setupp shape
+void UiButton::SimbolShapeSetup(const ResourceManager::Resource& resource)
+{
+	const auto offset = sf::Vector2f(shape().getGlobalBounds().getSize().x / 2 - 7, shape().getGlobalBounds().getSize().y / 2 - 7);
+
+	simbol_shape_.setTexture(&ResourceManager::Get().Texture(resource));
+	simbol_shape_.setSize(sf::Vector2f(16.0f, 16.0f));
+	simbol_shape_.setPosition(shape().getGlobalBounds().getPosition() + offset);
+	simbol_shape_.setScale(1.0f, 1.0f);
+}
+
 
 //GET
 bool UiButton::is_clicked_once() const
 {
 	return is_clicked_once_;
+}
+
+sf::Sprite UiButton::shape() const
+{
+	return button_sprite_;
 }
 
 
@@ -119,7 +136,11 @@ void UiButton::set_scale(const float factor_x, const float factor_y)
 {
 	button_sprite_.setScale(factor_x, factor_y);
 }
-void UiButton::set_is_clicked_once()
+void UiButton::set_is_clicked_on()
 {
-	is_clicked_once_ = !is_clicked_once_;
+	is_clicked_once_ = true;
+}
+void UiButton::set_is_clicked_off()
+{
+	is_clicked_once_ = false;
 }

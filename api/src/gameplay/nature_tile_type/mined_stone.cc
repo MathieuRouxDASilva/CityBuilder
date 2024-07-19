@@ -10,3 +10,9 @@ void MinedStone::set_texture(const ResourceManager::Resource& resource)
 {
 	sprite_.setTexture(ResourceManager::Get().Texture(resource));
 }
+
+//GET
+sf::Vector2f MinedStone::position() const
+{
+	return sprite_.getGlobalBounds().getPosition();
+}
